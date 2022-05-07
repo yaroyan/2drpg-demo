@@ -3,33 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using Com.Github.Yaroyan.Rpg.Sql;
 using UnityEngine;
+using UnityEngine.Networking;
 using SqlKata.Execution;
 using SqlKata.Compilers;
 using Microsoft.Data.Sqlite;
+using UnityEngine.AddressableAssets;
 
 namespace Com.Github.Yaroyan.Rpg.Repository
 {
     public abstract class AbstractRepository
     {
-        protected readonly QueryFactory _factory;
-        public AbstractRepository()
+        protected readonly ISqliteConfig sqliteConfig;
+
+        [VContainer.Inject]
+        public AbstractRepository(ISqliteConfig sqliteConfig)
         {
-            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
-            SqliteConnectionStringBuilder builder = new SqliteConnectionStringBuilder
-            {
-                DataSource = System.IO.Path.Combine(Application.streamingAssetsPath, "database.sqlite3")
-            };
-            SqliteConnection connection = new SqliteConnection(builder.ConnectionString);
-            SqliteCompiler compiler = new SqliteCompiler();
-            QueryFactory factory = new QueryFactory(connection, compiler);
-            _factory = factory;
+            this.sqliteConfig = sqliteConfig;
         }
 
         public void TestFind()
         {
-            foreach (System.Object obj in _factory.Query("Scenes").Select("Id").Get<System.Object>())
+            using (SqliteConnection connection = new SqliteConnection(this.sqliteConfig.createBuilder().ConnectionString))
             {
-                Debug.Log(obj.ToString());
+                Debug.Log(this.sqliteConfig.createBuilder().ConnectionString);
+                var compiler = new SqlServerCompiler();
+                var db = new QueryFactory(connection, compiler);
+                // scenesテーブルからidカラムのデータを取得する。
+                foreach (System.Object obj in db.Query("Scenes").Select("Id").Get<System.Object>())
+                {
+                    // テーブルからデータを取得できているか確認
+                    Debug.Log(obj.ToString());
+                }
             }
         }
 

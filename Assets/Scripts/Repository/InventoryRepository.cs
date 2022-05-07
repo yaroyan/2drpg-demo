@@ -5,6 +5,8 @@ namespace Com.Github.Yaroyan.Rpg.Repository
 {
     public class InventoryRepository : AbstractRepository
     {
-
+        public InventoryRepository(ISqliteConfig sqliteConfig) : base(sqliteConfig)
+        {
+        }
     }
 }
