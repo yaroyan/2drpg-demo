@@ -1,7 +1,10 @@
 using VContainer;
 using VContainer.Unity;
-using Com.Github.Yaroyan.Rpg;
-using Com.Github.Yaroyan.Rpg.Repository;
+using UnityEngine;
+using MessagePipe;
+using Com.Github.Yaroyan.Rpg.CQRS;
+using Yaroyan.Game.RPG.Domain.Model.Scene;
+using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryRepository.Scene;
 
 namespace Com.Github.Yaroyan.Rpg.DI
 {
@@ -11,22 +14,37 @@ namespace Com.Github.Yaroyan.Rpg.DI
 
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<ISqliteConfig>(_ => _environment.DbConfig.IsInMemory ? new InMemorySqliteConfig() : new SqliteConfig(GetPlatFormDataPath()), Lifetime.Singleton);
-            builder.Register<CharacterRepository>(Lifetime.Singleton);
-        }
 
-        string GetPlatFormDataPath()
-        {
-#if !UNITY_EDITOR && UNITY_ANDROID
-        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        using (var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
-        using (var getFilesDir = currentActivity.Call<AndroidJavaObject>("getFilesDir"))
-        {
-            return getFilesDir.Call<string>("getCanonicalPath");
-        }
-#else
-            return UnityEngine.Application.persistentDataPath;
-#endif
+            // ================
+            // Database
+            // ================
+            builder.Register<ISqliteConfig>(_ => _environment.DbConfig.IsInMemory ? new InMemorySqliteConfig() : new SqliteConfig(), Lifetime.Singleton);
+
+            // ================
+            // Repository
+            // ================
+            builder.Register<ISceneRepository, InMemorySceneRepository>(Lifetime.Singleton);
+
+            // ================
+            // CQRS - Command
+            // ================
+            builder.Register<ICommandHandler<DeleteItemCommand>, DeleteItemCommandHandler>(Lifetime.Singleton);
+            builder.Register<ICommandBus, CommandsBus>(Lifetime.Singleton);
+
+            // ================
+            // CQRS - Query
+            // ================
+
+            // ================
+            // CQRS - Event
+            // ================
+            builder.Register<IEventHandler<ItemDeletedEvent>, ItemDeletedHandler>(Lifetime.Singleton);
+            builder.Register<IEventBus, EventBus>(Lifetime.Singleton);
+
+            // ================
+            // MessagePipe
+            // ================
+            MessagePipeOptions options = builder.RegisterMessagePipe();
         }
     }
 }

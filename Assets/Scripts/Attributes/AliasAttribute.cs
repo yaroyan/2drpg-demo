@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.AttributeUsage(System.AttributeTargets.Field, Inherited = false, AllowMultiple = true)]
-sealed class AliasAttribute : System.Attribute
+public class AliasAttribute : System.Attribute
 {
     public string Alias { get; private set; }
     public AliasAttribute(string alias)

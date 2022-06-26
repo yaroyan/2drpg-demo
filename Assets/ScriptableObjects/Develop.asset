@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Develop
   m_EditorClassIdentifier: 
   <DbConfig>k__BackingField:
-    <IsInMemory>k__BackingField: 1
+    <IsInMemory>k__BackingField: 0
