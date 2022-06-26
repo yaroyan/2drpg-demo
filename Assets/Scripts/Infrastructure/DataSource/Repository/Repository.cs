@@ -1,10 +1,11 @@
+using Dapper;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using Dapper;
 using System.Linq;
+using Yaroyan.Game.DDD.SharedKernel;
 
-namespace Yaroyan.Game.DDD.SharedKernel
+namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository
 {
     public abstract class Repository<T, U> : IRepository<T, U> where T : IEntityId where U : IAggregateRoot<U>
     {
