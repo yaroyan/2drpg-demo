@@ -11,6 +11,7 @@ namespace Yaroyan.Game.DDD.SharedKernel
         void Delete(T entityId);
         void Delete(U aggregateRoot);
         void Save(U aggregateRoot);
+        void Update(U aggregateRoot);
         T NextIdentity();
     }
 }

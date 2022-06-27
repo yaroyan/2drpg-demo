@@ -55,10 +55,16 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository
         public override Domain.Model.User.User Find(Domain.Model.User.User aggregateRoot)
         {
             dynamic result = Connection.QueryFirstOrDefault($"select * from {TableName} where id = @id", new { id = aggregateRoot.Id }, Transaction);
-            return result.password?.Equals(Hash(aggregateRoot.Password.Word, result.salt)) ?? false
+            return result?.password == Hash(aggregateRoot.Password.Word, result.salt)
                 ? new Domain.Model.User.User(new UserId(result.id), new Password(aggregateRoot.Password.Word))
                 : null;
         }
 
+        public override void Update(Domain.Model.User.User aggregateRoot)
+        {
+            string sql = $"update {TableName} set password = @password where id = @id";
+            object param = new { id = aggregateRoot.Id, password = aggregateRoot.Password.Word };
+            Connection.Execute(sql, param, Transaction);
+        }
     }
 }

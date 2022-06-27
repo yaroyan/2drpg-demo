@@ -16,6 +16,11 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository
         {
             throw new System.NotImplementedException();
         }
+
+        public override void Update(Location aggregateRoot)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

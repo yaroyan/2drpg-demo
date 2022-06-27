@@ -24,6 +24,7 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository
         public virtual void Delete(T entityId) => Connection.Query<U>($"delete from {TableName} where id = @id", param: new { id = entityId }, Transaction);
         public virtual void Delete(U aggregateRoot) => Connection.Query<U>($"delete from {TableName} where id = @id", param: new { id = aggregateRoot.Id }, Transaction);
         public abstract void Save(U aggregateRoot);
+        public abstract void Update(U aggregateRoot);
         public abstract T NextIdentity();
     }
 }

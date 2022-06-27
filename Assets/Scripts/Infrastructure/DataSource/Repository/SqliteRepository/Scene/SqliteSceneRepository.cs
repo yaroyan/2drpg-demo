@@ -21,5 +21,10 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository
         {
             throw new NotImplementedException();
         }
+
+        public override void Update(Domain.Model.Scene.Scene aggregateRoot)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

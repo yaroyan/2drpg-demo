@@ -13,6 +13,7 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryReposito
         public void Delete(U entity) => keyValuePairs.Remove((T)entity.Id);
         public void Delete(T id) => keyValuePairs.Remove(id);
         public void Save(U entity) => keyValuePairs[(T)entity.Id] = entity;
+        public void Update(U entity) => Save(entity);
         public abstract T NextIdentity();
     }
 }
