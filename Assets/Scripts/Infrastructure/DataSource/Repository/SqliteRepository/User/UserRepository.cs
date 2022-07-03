@@ -13,6 +13,11 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository
     {
         public UserRepository(IDbTransaction transaction) : base(transaction) { }
 
+        /// <summary>
+        /// Hash the password.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         static (string Hashed, string Salt) Hash(string password)
         {
             byte[] salt = new byte[8];
@@ -28,6 +33,12 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository
             return (hashstring, BitConverter.ToString(salt));
         }
 
+        /// <summary>
+        /// Hash the password with the specified salt.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="salt"></param>
+        /// <returns></returns>
         static string Hash(string password, string salt)
         {
             byte[] saltbytes = salt.Split("-").Select(e => Convert.ToByte(e, 16)).ToArray();
@@ -52,10 +63,17 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository
             Connection.Execute(sql, param, Transaction);
         }
 
+        /// <summary>
+        /// If the search target does not exist or the password does not match, null is returned.
+        /// </summary>
+        /// <param name="aggregateRoot"></param>
+        /// <returns></returns>
         public override Domain.Model.User.User Find(Domain.Model.User.User aggregateRoot)
         {
-            dynamic result = Connection.QueryFirstOrDefault($"select * from {TableName} where id = @id", new { id = aggregateRoot.Id }, Transaction);
-            return result?.password == Hash(aggregateRoot.Password.Word, result.salt)
+            string sql = $"select id, password, salt from {TableName} where id = @id";
+            object param = new { id = aggregateRoot.Id };
+            var result = Connection.QueryFirstOrDefault<(string id, string password, string salt)>(sql, param, Transaction);
+            return result.password == Hash(aggregateRoot.Password.Word, result.salt)
                 ? new Domain.Model.User.User(new UserId(result.id), new Password(aggregateRoot.Password.Word))
                 : null;
         }

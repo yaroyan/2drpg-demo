@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SqliteImporter
   m_EditorClassIdentifier: 
   <Connector>k__BackingField:
-    rid: 7489651831655890944
+    rid: 9182653326375518208
   <Table>k__BackingField: 0
   references:
     version: 2
     RefIds:
-    - rid: 7489651831655890944
-      type: {class: SqliteConnector, ns: Yaroyan.Unity.EditorExtension.Importer, asm: Assembly-CSharp-Editor}
+    - rid: 9182653326375518208
+      type: {class: SqliteConnector, ns: Yaroyan.Game.EditorExtension.Importer, asm: Assembly-CSharp-Editor}
       data:
-        <Asset>k__BackingField: {fileID: 4900000, guid: 15766fc84bb8dfd41a8ffcce555d7924, type: 3}
+        <Asset>k__BackingField: {fileID: 0}
