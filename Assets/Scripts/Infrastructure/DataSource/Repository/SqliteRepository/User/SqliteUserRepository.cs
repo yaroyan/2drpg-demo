@@ -9,9 +9,9 @@ using Yaroyan.Game.RPG.Domain.Model.User;
 
 namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository.User
 {
-    public class UserRepository : Repository<UserId, Domain.Model.User.User>, IUserRepository
+    public class SqliteUserRepository : Repository<UserId, Domain.Model.User.User>, IUserRepository
     {
-        public UserRepository(IDbTransaction transaction) : base(transaction) { }
+        public SqliteUserRepository(IDbTransaction transaction) : base(transaction) { }
 
         /// <summary>
         /// Hash the password.

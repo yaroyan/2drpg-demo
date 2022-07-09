@@ -3,6 +3,7 @@ using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 using Yaroyan.Game.RPG.Domain.Model.Scene;
+using Yaroyan.Game.RPG.Domain.Model.User;
 
 namespace Yaroyan.Game.DDD.SharedKernel
 {
@@ -12,6 +13,7 @@ namespace Yaroyan.Game.DDD.SharedKernel
         protected ISceneRepository _sceneRepository;
         protected ILocationRepository _locationRepository;
         protected IRouteRepository _routeRepository;
+        protected IUserRepository _userRepository;
 
         IDbConnection _connection;
         protected IDbTransaction _transaction;
@@ -21,6 +23,7 @@ namespace Yaroyan.Game.DDD.SharedKernel
         public abstract ISceneRepository SceneRepository { get; }
         public abstract ILocationRepository LocationRepository { get; }
         public abstract IRouteRepository RouteRepository { get; }
+        public abstract IUserRepository UserRepository { get; }
 
         public UnitOfWork(string connectionString)
         {
