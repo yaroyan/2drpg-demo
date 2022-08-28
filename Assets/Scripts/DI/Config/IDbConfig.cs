@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 
-namespace Com.Github.Yaroyan.Rpg
+namespace Yaroyan.Game.RPG.Infrastructure.DataSource
 {
     public interface IDbConfig
     {

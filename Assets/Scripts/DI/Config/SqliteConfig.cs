@@ -1,52 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Microsoft.Data.Sqlite;
+using Yaroyan.Game.RPG.Helper;
 
-namespace Com.Github.Yaroyan.Rpg
+
+namespace Yaroyan.Game.RPG.Infrastructure.DataSource
 {
     /// <summary>
     /// SQLite3 database configuration class
     /// </summary>
-    public class SqliteConfig : ISqliteConfig
+    public class SqliteConfig : BaseInMemorySqliteConfig
     {
-        static readonly string s_dbAddress = "General/Database/database";
-        static readonly string s_fileName = "database.sqlite3";
+        static readonly string s_masterDatabasePath = "Database/SQLite/Master/master.sqlite3";
         static readonly string s_dataSource;
 
         static SqliteConfig()
         {
-            s_dataSource = System.IO.Path.Combine(GetPlatFormDataPath(), s_fileName);
+            s_dataSource = System.IO.Path.Combine(UnityPathHelper.GetPlatformIndependentStreamingAssetsPath(), s_masterDatabasePath);
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void Initialize()
+        public SqliteConfig()
         {
-            // ローカルに存在する場合は処理を継続しない。
-            if (System.IO.File.Exists(s_dataSource)) return;
-            SQLitePCL.Batteries_V2.Init();
-            // 同期ロードしてローカルにコピーする。
-            var handle = Addressables.LoadAssetAsync<TextAsset>(s_dbAddress);
-            System.IO.File.WriteAllBytes(s_dataSource, handle.WaitForCompletion().bytes);
-            Addressables.Release(handle);
+            connection = new SqliteConnection(CreateBuilder().ConnectionString);
+            connection.Open();
+            using (var sourceConnection = new SqliteConnection(new SqliteConnectionStringBuilder { DataSource = s_dataSource }.ConnectionString))
+            {
+                sourceConnection.Open();
+                sourceConnection.BackupDatabase(connection);
+            }
         }
 
-        static string GetPlatFormDataPath()
-        {
-#if !UNITY_EDITOR && UNITY_ANDROID
-        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        using (var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
-        using (var getFilesDir = currentActivity.Call<AndroidJavaObject>("getFilesDir"))
-        {
-            return getFilesDir.Call<string>("getCanonicalPath");
-        }
-#else
-            return UnityEngine.Application.persistentDataPath;
-#endif
-        }
-
-        public SqliteConnectionStringBuilder CreateBuilder() => new SqliteConnectionStringBuilder { DataSource = s_dataSource };
-
+        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        //static void initialize()
+        //{
+        //    // If the target file exists locally, processing does not continue.
+        //    if (System.IO.File.Exists(s_dataSource)) return;
+        //    // Synchronously load and copy files locally.
+        //    var handle = Addressables.LoadAssetAsync<TextAsset>(s_dbAddress);
+        //    System.IO.File.WriteAllBytes(s_dataSource, handle.WaitForCompletion().bytes);
+        //    Addressables.Release(handle);
+        //}
     }
 }

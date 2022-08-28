@@ -1,8 +1,8 @@
 using Microsoft.Data.Sqlite;
 
-namespace Com.Github.Yaroyan.Rpg
+namespace Yaroyan.Game.RPG.Infrastructure.DataSource
 {
-    public interface ISqliteConfig : IDbConfig
+    public interface ISqliteConfig : IDbConfig, System.IDisposable
     {
         /// <summary>
         /// �r���_�[�𐶐�����B

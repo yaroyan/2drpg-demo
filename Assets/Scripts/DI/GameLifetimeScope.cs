@@ -5,6 +5,7 @@ using MessagePipe;
 using Com.Github.Yaroyan.Rpg.CQRS;
 using Yaroyan.Game.RPG.Domain.Model.Scene;
 using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryRepository.Scene;
+using Yaroyan.Game.RPG.Infrastructure.DataSource;
 
 namespace Com.Github.Yaroyan.Rpg.DI
 {
