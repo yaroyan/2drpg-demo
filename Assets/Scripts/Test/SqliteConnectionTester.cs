@@ -5,84 +5,45 @@ using SqlKata.Compilers;
 using SqlKata.Execution;
 using Microsoft.Data.Sqlite;
 using UnityEngine.Networking;
+using Yaroyan.Game.RPG.Infrastructure.DataSource;
 
 /// <summary>
-/// SQLite3‚ÌÚ‘±Šm”FƒNƒ‰ƒX
+/// SQLite3ã®æ¥ç¶šç¢ºèªã‚¯ãƒ©ã‚¹
 /// </summary>
 public class SqliteConnectionTester : MonoBehaviour
 {
-    // DB–¼
+    // DBå
     static readonly string s_dbName = "database.sqlite3";
-    // ƒe[ƒuƒ‹–¼
+    // ãƒ†ãƒ¼ãƒ–ãƒ«å
     static readonly string s_tableName = "Scenes";
-    // ƒJƒ‰ƒ€–¼
+    // ã‚«ãƒ©ãƒ å
     static readonly string s_columnName = "Id";
 
     void Start()
     {
-        CloneDB();
-
-        SqliteConnectionStringBuilder builder = new SqliteConnectionStringBuilder
-        {
-            DataSource = System.IO.Path.Combine(GetPlatFormDataPath(), s_dbName)
-        };
 
         SQLitePCL.Batteries_V2.Init();
 
-        Debug.Log("Ú‘±Šm”F");
+        Debug.Log("æ¥ç¶šç¢ºèª");
 
-        SqliteConnection connection = new SqliteConnection(builder.ConnectionString);
+        SqliteConfig config = new SqliteConfig();
 
-        // SQLite‚Ìƒo[ƒWƒ‡ƒ“o—Í
-        Debug.Log("ƒo[ƒWƒ‡ƒ“î•ñF" + connection.ServerVersion);
+        Debug.Log(config.CreateBuilder().ConnectionString);
+        SqliteConnection connection = new SqliteConnection(config.CreateBuilder().ConnectionString);
+
+        // SQLiteã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³å‡ºåŠ›
+        Debug.Log("ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ï¼š" + connection.ServerVersion);
 
         SqliteCompiler compiler = new SqliteCompiler();
         QueryFactory factory = new QueryFactory(connection, compiler);
 
-        Debug.Log("ƒŒƒR[ƒho—ÍF" + s_tableName);
-        // scenesƒe[ƒuƒ‹‚©‚çidƒJƒ‰ƒ€‚Ìƒf[ƒ^‚ğæ“¾‚·‚éB
-        foreach (System.Object obj in factory.Query(s_tableName).Select(s_columnName).Get<System.Object>())
+        Debug.Log("ãƒ¬ã‚³ãƒ¼ãƒ‰å‡ºåŠ›ï¼š" + s_tableName);
+
+        // scenesãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰idã‚«ãƒ©ãƒ ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚
+        foreach (System.Object obj in factory.Query(s_tableName.ToLower()).Select(s_columnName).Get<System.Object>())
         {
-            // ƒe[ƒuƒ‹‚©‚çƒf[ƒ^‚ğæ“¾‚Å‚«‚Ä‚¢‚é‚©Šm”F
+            // ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã§ãã¦ã„ã‚‹ã‹ç¢ºèª
             Debug.Log(obj.ToString());
         }
-    }
-
-    string GetPlatFormDataPath()
-    {
-#if !UNITY_EDITOR && UNITY_ANDROID
-        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        using (var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
-        using (var getFilesDir = currentActivity.Call<AndroidJavaObject>("getFilesDir"))
-        {
-            return getFilesDir.Call<string>("getCanonicalPath");
-        }
-#else
-        return Application.persistentDataPath;
-#endif
-    }
-
-    void CloneDB()
-    {
-        string targetPath = System.IO.Path.Combine(GetPlatFormDataPath(), s_dbName);
-        if (System.IO.File.Exists(targetPath)) return;
-        string sourcePath = System.IO.Path.Combine(Application.streamingAssetsPath, s_dbName);
-
-#if !UNITY_EDITOR && UNITY_ANDROID
-        StartCoroutine(Copy(sourcePath, targetPath));
-#else
-        System.IO.File.Copy(sourcePath, targetPath);
-#endif
-
-#pragma warning disable CS8321 // ƒ[ƒJƒ‹ŠÖ”‚ÍéŒ¾‚³‚ê‚Ä‚¢‚Ü‚·‚ªAˆê“x‚àg—p‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ
-        IEnumerator Copy(string sourcePath, string targetPath)
-        {
-            using (UnityWebRequest request = UnityWebRequest.Get(sourcePath))
-            {
-                yield return request.SendWebRequest();
-                System.IO.File.WriteAllBytes(targetPath, request.downloadHandler.data);
-            }
-        }
-#pragma warning restore CS8321 // ƒ[ƒJƒ‹ŠÖ”‚ÍéŒ¾‚³‚ê‚Ä‚¢‚Ü‚·‚ªAˆê“x‚àg—p‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ
     }
 }
