@@ -12,8 +12,6 @@ using Yaroyan.Game.RPG.Infrastructure.DataSource;
 /// </summary>
 public class SqliteConnectionTester : MonoBehaviour
 {
-    // DB名
-    static readonly string s_dbName = "database.sqlite3";
     // テーブル名
     static readonly string s_tableName = "Scenes";
     // カラム名
@@ -23,14 +21,9 @@ public class SqliteConnectionTester : MonoBehaviour
     {
 
         SQLitePCL.Batteries_V2.Init();
-
         Debug.Log("接続確認");
-
         SqliteConfig config = new SqliteConfig();
-
-        Debug.Log(config.CreateBuilder().ConnectionString);
-        SqliteConnection connection = new SqliteConnection(config.CreateBuilder().ConnectionString);
-
+        SqliteConnection connection = new SqliteConnection(config.getConnectionString());
         // SQLiteのバージョン出力
         Debug.Log("バージョン情報：" + connection.ServerVersion);
 

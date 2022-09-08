@@ -2,12 +2,12 @@ using Microsoft.Data.Sqlite;
 
 namespace Yaroyan.Game.RPG.Infrastructure.DataSource
 {
-    public interface ISqliteConfig : IDbConfig, System.IDisposable
+    public interface ISqliteConfig : IDbConfig
     {
         /// <summary>
-        /// �r���_�[�𐶐�����B
+        /// Provide connection string.
         /// </summary>
         /// <returns></returns>
-        SqliteConnectionStringBuilder CreateBuilder();
+        string getConnectionString();
     }
 }
