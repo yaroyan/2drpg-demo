@@ -2,7 +2,7 @@ using Dapper;
 using System.Data;
 using System;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Dapper.SQLite.TypeHandler
+namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Dapper.TypeHandler
 {
     /// <summary>
     /// See link below.
