@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Yaroyan.Game.RPG.Domain.Model.Scene;
 using Yaroyan.Game.RPG.Domain.Model.User;
 
-namespace Yaroyan.Game.DDD.SharedKernel
+namespace Yaroyan.Game.RPG.Infrastructure.DataSource
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -13,5 +13,6 @@ namespace Yaroyan.Game.DDD.SharedKernel
         IRouteRepository RouteRepository { get; }
         IUserRepository UserRepository { get; }
         void Commit();
+        void Rollback();
     }
 }

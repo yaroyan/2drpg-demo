@@ -18,9 +18,20 @@ MonoBehaviour:
   m_GUID: e36f59f2f1918604e8e87311831ceadb
   m_SerializeEntries:
   - m_GUID: 7ee56aebd4fa78d439fab30898d49428
-    m_Address: Assets/Addressables/Database/SQLite/QueryDB/query.bytes
+    m_Address: Assets/Addressables/Database/SQLite/QueryDB/QueryDB.bytes
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - dataSource
+  - m_GUID: 236265ebc48257d4799f9e1db6746653
+    m_Address: Assets/Addressables/Database/LiteDB/EventStore/SnapshotStore.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - dataSource
+  - m_GUID: 62caf0b124b8dca46813a951e68a6d3a
+    m_Address: Assets/Addressables/Database/LiteDB/EventStore/EventStore.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - dataSource
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 12d291153e6323342967eb865909388d, type: 2}
   m_SchemaSet:

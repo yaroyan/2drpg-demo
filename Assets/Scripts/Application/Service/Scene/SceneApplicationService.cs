@@ -19,7 +19,7 @@ public class SceneApplicationService
         _sceneDomainService = new SceneDomainService(_sceneRepository);
     }
 
-    public void RegisterScene(string parentId, List<string> locations, int buildIndex, string sceneName)
+    public void RegisterScene(Guid parentId, List<string> locations, int buildIndex, string sceneName)
     {
         SceneContext context = new SceneContext(buildIndex, sceneName);
         Scene scene = new Scene(_sceneRepository.NextIdentity(), context, new SceneId(parentId));
@@ -27,7 +27,7 @@ public class SceneApplicationService
         _sceneRepository.Save(scene);
     }
 
-    public void UnRegisterScene(string id)
+    public void UnRegisterScene(Guid id)
     {
         Scene scene = _sceneRepository.Find(new SceneId(id));
         if (scene is null) throw new InvalidOperationException($"Not found. Scene id: {id}");

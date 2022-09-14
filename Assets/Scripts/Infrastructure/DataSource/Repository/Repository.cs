@@ -7,7 +7,7 @@ using Yaroyan.Game.DDD.SharedKernel;
 
 namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository
 {
-    public abstract class Repository<T, U> : IRepository<T, U> where T : IEntityId where U : IAggregateRoot<U>
+    public abstract class Repository<T, U> : IRepository<T, U> where T : IEntityId where U : IAggregateRoot<T>
     {
         protected IDbTransaction Transaction { get; private set; }
         protected IDbConnection Connection => Transaction.Connection;

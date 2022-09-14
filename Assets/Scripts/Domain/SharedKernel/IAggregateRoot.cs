@@ -3,8 +3,5 @@ using System.Collections.Generic;
 
 namespace Yaroyan.Game.DDD.SharedKernel
 {
-    public interface IAggregateRoot<T> : IEntity<T>
-    {
-
-    }
+    public interface IAggregateRoot<T> : IEntity<T> where T : IEntityId { }
 }

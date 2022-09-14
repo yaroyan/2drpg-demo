@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Yaroyan.Game.RPG.Domain.Model.Scene;
 using Yaroyan.Game.RPG.Domain.Model.User;
 
-namespace Yaroyan.Game.DDD.SharedKernel
+namespace Yaroyan.Game.RPG.Infrastructure.DataSource
 {
 
     public abstract class UnitOfWork : IUnitOfWork
@@ -51,6 +51,11 @@ namespace Yaroyan.Game.DDD.SharedKernel
                 _transaction = _connection.BeginTransaction();
                 ResetRepositories();
             }
+        }
+
+        public void Rollback()
+        {
+            _transaction.Rollback();
         }
 
         void ResetRepositories()

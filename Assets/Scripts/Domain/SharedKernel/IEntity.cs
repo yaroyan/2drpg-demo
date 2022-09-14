@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public interface IEntity<T> : IEquatable<T>
+public interface IEntity<T> : IEquatable<IEntity<T>> where T : IEntityId
 {
-    IEntityId Id { get; }
+    T Id { get; }
 }

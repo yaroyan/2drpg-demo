@@ -8,10 +8,10 @@ namespace Yaroyan.Game.RPG.Domain.Model.Scene
     /// <summary>
     /// An entity that represents a path to a destination.
     /// </summary>
-    public class Route : IAggregateRoot<Route>
+    public class Route : Entity<RouteId>, IAggregateRoot<RouteId>
     {
         readonly RouteId _id;
-        public IEntityId Id { get => _id; }
+        public override RouteId Id { get => _id; }
         LocationId _originId;
         public LocationId OriginId { get => _originId; private set => _originId = value ?? throw new ArgumentNullException(nameof(OriginId)); }
         LocationId _destinationId;

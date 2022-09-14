@@ -11,6 +11,7 @@ public class CQRSTester : MonoBehaviour
     void Inject(ICommandBus commandBus)
     {
         this.commandBus = commandBus;
+        Debug.Log(commandBus is null);
     }
     // Start is called before the first frame update
     void Start()

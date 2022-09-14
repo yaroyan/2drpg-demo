@@ -19,6 +19,7 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryReposito
         public IRouteRepository RouteRepository => _routeRepository ??= new InMemoryRouteRepository();
         public IUserRepository UserRepository => _userRepository ??= new InMemoryUserRepository();
         public void Commit() { }
+        public void Rollback() { }
         public void Dispose() { }
     }
 }

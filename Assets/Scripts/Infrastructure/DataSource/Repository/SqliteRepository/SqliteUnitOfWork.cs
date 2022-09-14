@@ -18,15 +18,7 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository
 
         public SqliteUnitOfWork(string connectionString) : base(connectionString) { }
 
-        protected override IDbConnection CreateConnection(string connectionString)
-        {
-            SqliteConnectionStringBuilder builder = new SqliteConnectionStringBuilder
-            {
-                DataSource = connectionString
-            };
-            SQLitePCL.Batteries_V2.Init();
-            return new SqliteConnection(builder.ConnectionString);
-        }
+        protected override IDbConnection CreateConnection(string connectionString) => new SqliteConnection(connectionString);
     }
 }
 

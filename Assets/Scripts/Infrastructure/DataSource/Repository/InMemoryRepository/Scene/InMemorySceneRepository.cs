@@ -9,6 +9,6 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryReposito
     public class InMemorySceneRepository : InMemoryRepository<SceneId, Domain.Model.Scene.Scene>, ISceneRepository
     {
         public Domain.Model.Scene.Scene Find(SceneContext context) => keyValuePairs.FirstOrDefault(e => e.Value.Equals(context)).Value;
-        public override SceneId NextIdentity() => new SceneId(Guid.NewGuid().ToString("N"));
+        public override SceneId NextIdentity() => new SceneId(Guid.NewGuid());
     }
 }

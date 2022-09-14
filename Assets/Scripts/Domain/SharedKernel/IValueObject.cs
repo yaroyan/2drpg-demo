@@ -3,8 +3,5 @@ using System.Collections.Generic;
 
 namespace Yaroyan.Game.DDD.SharedKernel
 {
-    public interface IValueObject
-    {
-
-    }
+    public interface IValueObject { }
 }

@@ -4,7 +4,7 @@ using Yaroyan.Game.DDD.SharedKernel;
 
 namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryRepository
 {
-    public abstract class InMemoryRepository<T, U> : IRepository<T, U> where T : IEntityId where U : IAggregateRoot<U>
+    public abstract class InMemoryRepository<T, U> : IRepository<T, U> where T : IEntityId where U : IAggregateRoot<T>
     {
         protected Dictionary<T, U> keyValuePairs = new Dictionary<T, U>();
         public U Find(T id) => keyValuePairs[id];

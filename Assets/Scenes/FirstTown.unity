@@ -148,7 +148,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27222324}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4a62ed4f14356d45b8ca2b3740fb9e1, type: 3}
   m_Name: 
@@ -632,7 +632,7 @@ PrefabInstance:
     - target: {fileID: -992182972645978882, guid: 66b1d77fb894a314690fabeeac50c682, type: 3}
       propertyPath: autoInjectGameObjects.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 27222324}
     - target: {fileID: 4129944174465042213, guid: 66b1d77fb894a314690fabeeac50c682, type: 3}
       propertyPath: m_Name
       value: RootLifetimeScope

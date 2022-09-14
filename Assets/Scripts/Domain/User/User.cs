@@ -5,14 +5,14 @@ using Yaroyan.Game.DDD.SharedKernel;
 
 namespace Yaroyan.Game.RPG.Domain.Model.User
 {
-    public class User : Entity<User>, IAggregateRoot<User>
+    public class User : Entity<UserId>, IAggregateRoot<UserId>
     {
-        readonly UserId _userId;
-        public override IEntityId Id => _userId;
+        readonly UserId _id;
+        public override UserId Id => _id;
         public Password Password { get; private set; }
-        public User(UserId userId, Password password)
+        public User(UserId id, Password password)
         {
-            _userId = userId;
+            _id = id;
             Password = password;
         }
     }

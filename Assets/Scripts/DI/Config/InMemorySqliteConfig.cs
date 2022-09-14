@@ -10,10 +10,11 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource
     /// </summary>
     public class InMemorySqliteConfig : AbstractSqliteConfig, System.IDisposable
     {
-        static readonly string s_masterDataBaseName = "master";
+        static readonly string s_masterDataBaseName = "QueryDB";
 
         bool _disposed = false;
-        protected SqliteConnection connection;
+        SqliteConnection connection;
+        
         public InMemorySqliteConfig() : base(new SqliteConnectionStringBuilder { DataSource = s_masterDataBaseName, Mode = SqliteOpenMode.Memory, Cache = SqliteCacheMode.Shared })
         {
             // See link below.

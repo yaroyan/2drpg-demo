@@ -8,10 +8,14 @@ namespace Yaroyan.Game.RPG.Domain.Model.Scene
     /// <summary>
     /// Scene Entity.
     /// </summary>
-    public class Scene : IAggregateRoot<Scene>
+    public class Scene : IAggregateRoot<SceneId>
     {
         readonly SceneId _id;
-        public IEntityId Id { get => _id; }
+        public SceneId Id
+        {
+            get => _id;
+            init => _id = value ?? throw new ArgumentNullException(nameof(Id));
+        }
         public SceneId ParentId { get; private set; }
         SceneContext _sceneContext;
         public SceneContext SceneContext
@@ -28,6 +32,11 @@ namespace Yaroyan.Game.RPG.Domain.Model.Scene
         }
 
         public bool Equals(Scene other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Equals(IEntity<SceneId> other)
         {
             throw new NotImplementedException();
         }

@@ -12,6 +12,7 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource
         {
             this.builder = builder;
         }
+
         public string getConnectionString() => builder.ConnectionString;
     }
 }

@@ -5,7 +5,10 @@ using MessagePipe;
 using Com.Github.Yaroyan.Rpg.CQRS;
 using Yaroyan.Game.RPG.Domain.Model.Scene;
 using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryRepository.Scene;
+using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository;
+using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository;
 using Yaroyan.Game.RPG.Infrastructure.DataSource;
+using System;
 
 namespace Com.Github.Yaroyan.Rpg.DI
 {
@@ -17,14 +20,9 @@ namespace Com.Github.Yaroyan.Rpg.DI
         {
 
             // ================
-            // Database
+            // QueryDB
             // ================
-            builder.Register<ISqliteConfig>(_ => _environment.DbConfig.IsInMemory ? new InMemorySqliteConfig() : new SqliteConfig(), Lifetime.Singleton);
-
-            // ================
-            // Repository
-            // ================
-            builder.Register<ISceneRepository, InMemorySceneRepository>(Lifetime.Singleton);
+            builder.RegisterFactory<IUnitOfWork>(() => new SqliteUnitOfWork(_environment.DbConfig.GetSqliteQueryDBConfig().getConnectionString()));
 
             // ================
             // CQRS - Command

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Yaroyan.Game.DDD.SharedKernel
 {
-    public interface IRepository<T, U> where T : IEntityId where U : IAggregateRoot<U>
+    public interface IRepository<T, U> where T : IEntityId where U : IAggregateRoot<T>
     {
         U Find(T entityId);
         U Find(U aggregateRoot);

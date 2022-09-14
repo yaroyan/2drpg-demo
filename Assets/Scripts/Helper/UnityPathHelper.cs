@@ -5,19 +5,24 @@ namespace Yaroyan.Game.RPG.Helper
 {
     public static class UnityPathHelper
     {
-
-        public static string GetPlatformIndependentDataPath()
+        static string s_platformIndependentPersistentDataPath;
+        static string s_platformIndependentStreamingAssetsPath;
+        public static string GetPlatformIndependentPersistentDataPath()
         {
+            if (s_platformIndependentPersistentDataPath is null)
+            {
 #if !UNITY_EDITOR && UNITY_ANDROID
-        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        using (var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
-        using (var getFilesDir = currentActivity.Call<AndroidJavaObject>("getFilesDir"))
-        {
-            return getFilesDir.Call<string>("getCanonicalPath");
-        }
+                using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                using (var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
+                using (var getFilesDir = currentActivity.Call<AndroidJavaObject>("getFilesDir"))
+                {
+                    s_platformIndependentPersistentDataPath = getFilesDir.Call<string>("getCanonicalPath");
+                }
 #else
-            return UnityEngine.Application.persistentDataPath;
+                s_platformIndependentPersistentDataPath = UnityEngine.Application.persistentDataPath;
 #endif
+            }
+            return s_platformIndependentPersistentDataPath;
         }
 
         /// <summary>
@@ -26,12 +31,15 @@ namespace Yaroyan.Game.RPG.Helper
         /// <returns>stremingAssetsPath</returns>
         public static string GetPlatformIndependentStreamingAssetsPath()
         {
-
+            if (s_platformIndependentStreamingAssetsPath is null)
+            {
 #if !UNITY_EDITOR && UNITY_ANDROID
-            return GetAndroidStreamingAssetsPath();
+                s_platformIndependentStreamingAssetsPath = GetAndroidStreamingAssetsPath();
 #else
-            return UnityEngine.Application.streamingAssetsPath;
+                s_platformIndependentStreamingAssetsPath = UnityEngine.Application.streamingAssetsPath;
 #endif
+            }
+            return s_platformIndependentStreamingAssetsPath;
         }
 
         /// <summary>
