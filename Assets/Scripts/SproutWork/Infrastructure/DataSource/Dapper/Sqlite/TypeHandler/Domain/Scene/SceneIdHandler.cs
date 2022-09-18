@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.Game.RPG.Domain.Model.Scene;
+using Yaroyan.SproutWork.Domain.Model.Scene;
 using System;
+using Yaroyan.SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository.SQLiteRepository.Dapper.TypeHandler;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Dapper.TypeHandler.Domain.Model.Scene
+namespace Yaroyan.SproutWork.Infrastructure.DataSource.Dapper.TypeHandler.Domain.Model.Scene
 {
     public class SceneIdHandler : EntityIdHandler<SceneId>
     {

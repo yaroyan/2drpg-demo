@@ -11,9 +11,7 @@
         "Unity.Addressables",
         "Unity.ResourceManager"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource
+namespace Yaroyan.SproutWork.Infrastructure.DataSource
 {
-    public class LiteDBConfig : ILiteDBConfig
+    public class LiteDBConfig : AbstractLiteDBConfig
     {
-        public string getConnectionString()
+        public LiteDBConfig(string connectionString) : base(connectionString)
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }

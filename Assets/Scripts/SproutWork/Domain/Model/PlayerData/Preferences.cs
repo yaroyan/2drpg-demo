@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Yaroyan.Game.RPG.Domain.Model.SaveData
+namespace Yaroyan.SproutWork.Domain.Model.SaveData
 {
     public class Preferences
     {

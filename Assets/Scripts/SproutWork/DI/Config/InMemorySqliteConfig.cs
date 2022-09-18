@@ -1,35 +1,34 @@
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource
+namespace Yaroyan.SproutWork.Infrastructure.DataSource
 {
     /// <summary>
     /// In-memory SQLite3 database configuration class
     /// </summary>
-    public class InMemorySqliteConfig : AbstractSqliteConfig, System.IDisposable
+    public class InMemorySqliteConfig : AbstractSqliteConfig
     {
         static readonly string s_masterDataBaseName = "QueryDB";
 
-        bool _disposed = false;
-        SqliteConnection connection;
-        
+        bool _isDisposed = false;
+        SqliteConnection _connection;
+
         public InMemorySqliteConfig() : base(new SqliteConnectionStringBuilder { DataSource = s_masterDataBaseName, Mode = SqliteOpenMode.Memory, Cache = SqliteCacheMode.Shared })
         {
             // See link below.
             // https://docs.microsoft.com/ja-jp/dotnet/standard/data/sqlite/in-memory-databases
-            connection = new SqliteConnection(getConnectionString());
-            connection.Open();
+            _connection = new SqliteConnection(getConnectionString());
+            _connection.Open();
         }
 
-        public void Dispose() => Dispose(true);
-
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
-            if (_disposed) return;
-            connection.Dispose();
-            _disposed = !_disposed;
+            if (_isDisposed) return;
+            if (disposing) _connection.Dispose();
+            _isDisposed = !_isDisposed;
         }
     }
 }

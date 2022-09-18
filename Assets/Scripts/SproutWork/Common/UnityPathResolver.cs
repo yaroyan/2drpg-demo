@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Yaroyan.Game.RPG.Helper
+namespace Yaroyan.SproutWork.Helper
 {
-    public static class UnityPatResolver
+    public static class UnityPathResolver
     {
         static string s_platformIndependentPersistentDataPath;
         static string s_platformIndependentStreamingAssetsPath;

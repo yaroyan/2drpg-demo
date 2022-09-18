@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using Yaroyan.SeedWork.DDD.Domain.Model;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository
+namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository
 {
     public abstract class Repository<T, U> : IRepository<T, U> where T : IEntityId where U : IAggregateRoot<T>
     {

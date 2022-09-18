@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-namespace Yaroyan.Game.RPG.Test
+namespace Yaroyan.SproutWork.Test
 {
     public class EventSourcingTest : MonoBehaviour
     {

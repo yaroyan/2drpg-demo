@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
-namespace Yaroyan.Game.RPG.Domain.Model.Scene
+namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
     /// <summary>
     /// Domain service for Scene entity.

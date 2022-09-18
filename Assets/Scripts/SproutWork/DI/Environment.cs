@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Yaroyan.Game.RPG.Helper;
+using Yaroyan.SproutWork.Helper;
+using Microsoft.Data.Sqlite;
+using System.Data.Common;
 using System.Linq;
 using System.IO;
-using Yaroyan.Game.RPG.Infrastructure.DataSource;
-using Yaroyan.Game.RPG.Infrastructure.DataSource.Dapper.TypeHandler;
-using Yaroyan.Game.RPG.Infrastructure.DataSource.Dapper.TypeHandler.Domain.Model.Scene;
+using System;
+using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.InMemoryRepository;
+using Yaroyan.SproutWork.Infrastructure.DataSource;
+using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository;
+using Yaroyan.SproutWork.Infrastructure.DataSource.Dapper.TypeHandler;
+using Yaroyan.SproutWork.Infrastructure.DataSource.Dapper.TypeHandler.Domain.Model.Scene;
 using Dapper;
 
 [CreateAssetMenu(menuName = "MyScriptables/Create Environment")]
@@ -21,25 +26,44 @@ public class DbConfig
 {
     public static readonly string s_queryDBAddress = "Assets/Addressables/Database/SQLite/QueryDB/QueryDB.bytes";
     public static readonly string s_eventStoreAddress = "Assets/Addressables/Database/LiteDB/EventStore/EventStore.bytes";
-    public static readonly string s_snapshotStoreAddress = "Assets/Addressables/Database/LiteDB/EventStore/SnapshotStore.bytes";
     public static readonly string s_queryDBMasterDataDDLAddress = "";
     public static readonly string s_queryDBMasterDataDMLAddress = "";
     public static readonly string s_dataSourceLabel = "dataSource";
+    public static readonly string s_masterDataBaseName = "QueryDB";
 
 #if UNITY_EDITOR
     public static string GetQueryDBPath() => Path.Combine(UnityEngine.Application.dataPath, "Addressables/Database/SQLite/QueryDB/QueryDB.bytes");
     public static string GetEventStorePath() => Path.Combine(UnityEngine.Application.dataPath, "Addressables/Database/LiteDB/EventStore/EventStore.bytes");
-    public static string GetSnapshotStorePath() => Path.Combine(UnityEngine.Application.dataPath, "Addressables/Database/LiteDB/EventStore/SnapshotStore.bytes");
 #else
-    public static string GetQueryDBPath() => Path.Combine(UnityPathHelper.GetPlatformIndependentPersistentDataPath(), s_dataSourceLabel, s_queryDBAddress.Split("/").Last());
-    public static string GetEventStorePath() => Path.Combine(UnityPathHelper.GetPlatformIndependentPersistentDataPath(), s_dataSourceLabel, s_eventStoreAddress.Split("/").Last());
-    public static string GetSnapshotStorePath() => Path.Combine(UnityPathHelper.GetPlatformIndependentPersistentDataPath(), s_dataSourceLabel, s_snapshotStoreAddress.Split("/").Last());
+    public static string GetQueryDBPath() => Path.Combine(UnityPathResolver.GetPlatformIndependentPersistentDataPath(), s_dataSourceLabel, s_queryDBAddress.Split("/").Last());
+    public static string GetEventStorePath() => Path.Combine(UnityPathResolver.GetPlatformIndependentPersistentDataPath(), s_dataSourceLabel, s_eventStoreAddress.Split("/").Last());
 #endif
 
-    [field: SerializeField] public bool IsInMemory { get; private set; }
-    public ISqliteConfig GetSqliteQueryDBConfig() => IsInMemory ? new InMemorySqliteConfig() : new SqliteConfig(GetQueryDBPath());
-    public ILiteDBConfig GetLiteDBEventStoreConfig() => IsInMemory ? new InMemoryLiteDBConfig() : new LiteDBConfig();
-    public ILiteDBConfig GetLiteDBSnapshotStoreConfig() => IsInMemory ? new InMemoryLiteDBConfig() : new LiteDBConfig();
+    [field: SerializeField] internal QueryDBInstanceType QueryDBInstanceType { get; private set; }
+    [field: SerializeField] internal EventStoreInstanceType EventStoreInstanceType { get; private set; }
+}
+
+internal enum QueryDBInstanceType
+{
+    SQLite,
+    InMemorySQLite,
+    Dictionary,
+}
+
+internal enum EventStoreInstanceType
+{
+    LiteDB,
+    InMemoryLiteDB,
+    Dictionary,
+}
+
+public class EventStoreUniOfWorkProvider
+{
+    readonly DbConfig _config;
+    public EventStoreUniOfWorkProvider(DbConfig config)
+    {
+        _config = config;
+    }
 }
 
 public class RuntimeInitializer
@@ -65,7 +89,6 @@ public class RuntimeInitializer
 #if !UNITY_EDITOR
         CloneAddressableTextAssets(DbConfig.s_queryDBAddress, DbConfig.GetQueryDBPath());
         CloneAddressableTextAssets(DbConfig.s_eventStoreAddress, DbConfig.GetEventStorePath());
-        CloneAddressableTextAssets(DbConfig.s_snapshotStoreAddress, DbConfig.GetSnapshotStorePath());
 #endif
     }
 
@@ -93,7 +116,7 @@ public class RuntimeInitializer
     /// <param name="callback"></param>
     static void CloneAddressableTextAssets(string label, System.Action<TextAsset> callback)
     {
-        var directoryInfo = new DirectoryInfo(Path.Combine(UnityPatResolver.GetPlatformIndependentPersistentDataPath(), DbConfig.s_dataSourceLabel));
+        var directoryInfo = new DirectoryInfo(Path.Combine(UnityPathResolver.GetPlatformIndependentPersistentDataPath(), DbConfig.s_dataSourceLabel));
         directoryInfo.Refresh();
         // If the directory contains target files exists locally, processing does not continue.
         if (directoryInfo.Exists) return;

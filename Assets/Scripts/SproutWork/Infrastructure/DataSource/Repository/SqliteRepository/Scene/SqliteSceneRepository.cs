@@ -3,11 +3,11 @@ using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 using Yaroyan.SeedWork.DDD.Domain.Model;
-using Yaroyan.Game.RPG.Domain.Model.Scene;
+using Yaroyan.SproutWork.Domain.Model.Scene;
 using Dapper;
 using System.Linq;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository.Scene
+namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository.Scene
 {
     public class SqliteSceneRepository : Repository<SceneId, Domain.Model.Scene.Scene>, ISceneRepository
     {

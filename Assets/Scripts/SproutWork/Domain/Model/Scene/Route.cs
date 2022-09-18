@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using Yaroyan.SeedWork.DDD.Domain.Model;
 
-namespace Yaroyan.Game.RPG.Domain.Model.Scene
+namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
     /// <summary>
     /// An entity that represents a path to a destination.

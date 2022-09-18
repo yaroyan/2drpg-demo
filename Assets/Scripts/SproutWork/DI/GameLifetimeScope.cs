@@ -3,18 +3,13 @@ using VContainer.Unity;
 using UnityEngine;
 using MessagePipe;
 using Com.Github.Yaroyan.Rpg.CQRS;
-using Yaroyan.Game.RPG.Domain.Model.Scene;
-using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.InMemoryRepository.Scene;
-using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository;
-using Yaroyan.Game.RPG.Infrastructure.DataSource.Repository;
-using Yaroyan.Game.RPG.Infrastructure.DataSource;
 using System;
 
 namespace Com.Github.Yaroyan.Rpg.DI
 {
     public class GameLifetimeScope : LifetimeScope
     {
-        [UnityEngine.SerializeField] Environment _environment;
+        [SerializeField] Environment _environment;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -22,7 +17,7 @@ namespace Com.Github.Yaroyan.Rpg.DI
             // ================
             // QueryDB
             // ================
-            builder.RegisterFactory<IUnitOfWork>(() => new SqliteUnitOfWork(_environment.DbConfig.GetSqliteQueryDBConfig().getConnectionString()));
+            builder.RegisterInstance<IQueryDBUOWProvider>(new QueryDBUOWProvider(_environment.DbConfig));
 
             // ================
             // CQRS - Command

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource
+namespace Yaroyan.SproutWork.Infrastructure.DataSource
 {
     public interface ILiteDBConfig : IDbConfig
     {
@@ -10,6 +10,6 @@ namespace Yaroyan.Game.RPG.Infrastructure.DataSource
         /// Provide connection string.
         /// </summary>
         /// <returns></returns>
-        string getConnectionString();
+        string ConnectionString { get; init; }
     }
 }

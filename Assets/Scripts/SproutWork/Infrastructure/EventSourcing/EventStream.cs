@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Yaroyan.Game.RPG.Infrastructure.EventSourcing
+namespace Yaroyan.SproutWork.Infrastructure.EventSourcing
 {
     public class EventStream
     {

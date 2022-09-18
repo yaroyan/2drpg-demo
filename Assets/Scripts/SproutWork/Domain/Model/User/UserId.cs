@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Yaroyan.SeedWork.DDD.Domain.Model;
 using System;
 
-namespace Yaroyan.Game.RPG.Domain.Model.User
+namespace Yaroyan.SproutWork.Domain.Model.User
 {
     public record UserId(Guid Id) : EntityId(Id) { }
 }

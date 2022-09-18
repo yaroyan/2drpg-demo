@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-namespace Yaroyan.Game.RPG.Domain.Model.Scene
+namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
     public class Gateway : Location
     {

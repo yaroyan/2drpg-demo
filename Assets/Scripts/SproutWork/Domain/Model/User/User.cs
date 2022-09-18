@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using Yaroyan.SeedWork.DDD.Domain.Model;
 
-namespace Yaroyan.Game.RPG.Domain.Model.User
+namespace Yaroyan.SproutWork.Domain.Model.User
 {
     public class User : Entity<UserId>, IAggregateRoot<UserId>
     {

@@ -4,7 +4,7 @@ using System.Data;
 using Dapper;
 using Yaroyan.SeedWork.DDD.Domain.Model;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Dapper.TypeHandler
+namespace Yaroyan.SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository.SQLiteRepository.Dapper.TypeHandler
 {
     public abstract class EntityIdHandler<T> : SqlMapper.TypeHandler<T> where T : EntityId
     {

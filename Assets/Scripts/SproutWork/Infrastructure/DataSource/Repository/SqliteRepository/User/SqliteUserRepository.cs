@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Security.Cryptography;
 using Dapper;
-using Yaroyan.Game.RPG.Domain.Model.User;
+using Yaroyan.SproutWork.Domain.Model.User;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource.Repository.SqliteRepository.User
+namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository.User
 {
     public class SqliteUserRepository : Repository<UserId, Domain.Model.User.User>, IUserRepository
     {

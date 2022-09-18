@@ -1,8 +1,8 @@
-using Microsoft.Data.Sqlite;
+using System;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource
+namespace Yaroyan.SproutWork.Infrastructure.DataSource
 {
-    public interface ISqliteConfig : IDbConfig
+    public interface ISqliteConfig : IDbConfig, IDisposable
     {
         /// <summary>
         /// Provide connection string.

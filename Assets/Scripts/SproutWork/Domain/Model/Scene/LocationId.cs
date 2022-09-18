@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Yaroyan.SeedWork.DDD.Domain.Model;
 using System;
 
-namespace Yaroyan.Game.RPG.Domain.Model.Scene
+namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
     /// <summary>
     /// Unique identifier of the Location entity.

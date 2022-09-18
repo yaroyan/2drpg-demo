@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Yaroyan.SeedWork.DDD.Domain.Model;
 
-namespace Yaroyan.Game.RPG.Infrastructure.EventSourcing
+namespace Yaroyan.SproutWork.Infrastructure.EventSourcing
 {
     public interface IEventStore
     {

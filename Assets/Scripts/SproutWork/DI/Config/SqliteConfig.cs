@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.Data.Sqlite;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource
+namespace Yaroyan.SproutWork.Infrastructure.DataSource
 {
     /// <summary>
     /// SQLite3 database configuration class

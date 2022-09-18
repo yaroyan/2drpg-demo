@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.Game.RPG.Domain.Model.Scene;
-using Yaroyan.Game.RPG.Domain.Model.User;
+using Yaroyan.SproutWork.Domain.Model.Scene;
+using Yaroyan.SproutWork.Domain.Model.User;
 
-namespace Yaroyan.Game.RPG.Infrastructure.DataSource
+namespace Yaroyan.SproutWork.Infrastructure.DataSource
 {
     public interface IUnitOfWork : SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository.IUnitOfWork
     {

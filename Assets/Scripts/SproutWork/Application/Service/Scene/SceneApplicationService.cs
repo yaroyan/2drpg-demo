@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.Game.RPG.Domain.Model.Scene;
+using Yaroyan.SproutWork.Domain.Model.Scene;
 using VContainer;
 using System;
 using Yaroyan.SeedWork.Common.Extension;
