@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using UnityEngine;
 
-namespace Yaroyan.Game.EditorExtension.SubclassSelector
+namespace Yaroyan.SproutWork.EditorExtension.SubclassSelector
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class SubclassSelectorAttribute : PropertyAttribute

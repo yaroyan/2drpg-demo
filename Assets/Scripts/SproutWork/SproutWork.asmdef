@@ -1,0 +1,25 @@
+{
+    "name": "SproutWork",
+    "rootNamespace": "",
+    "references": [
+        "SeedWork",
+        "VContainer",
+        "UniRx",
+        "UniTask",
+        "MessagePipe",
+        "MessagePipe.VContainer",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

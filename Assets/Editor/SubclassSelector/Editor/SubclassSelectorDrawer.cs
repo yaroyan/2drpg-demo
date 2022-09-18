@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Yaroyan.Game.EditorExtension.SubclassSelector
+namespace Yaroyan.SproutWork.EditorExtension.SubclassSelector
 {
 
     [CustomPropertyDrawer(typeof(SubclassSelectorAttribute))]
