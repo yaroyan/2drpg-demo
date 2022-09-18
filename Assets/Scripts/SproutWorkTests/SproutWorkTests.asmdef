@@ -1,0 +1,6 @@
+{
+    "name": "SproutWorkTests",
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}
