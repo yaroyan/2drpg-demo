@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using Yaroyan.SeedWork.DDD.Domain.Model;
+using Yaroyan.SeedWork.DDD.Domain.Event;
 
 namespace Yaroyan.SproutWork.Domain.Model.User
 {
     public class User : Entity<UserId>, IAggregateRoot<UserId>
     {
-        readonly UserId _id;
-        public override UserId Id => _id;
-        public Password Password { get; private set; }
-        public User(UserId id, Password password)
+        public User(IEnumerable<IEvent> events) : base(events)
         {
-            _id = id;
+        }
+
+        public override UserId Id { get; init; }
+        public Password Password { get; private set; }
+
+        protected override void Mutate(IEvent @event)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User(UserId id, Password password) : base(Enumerable.Empty<IEvent>())
+        {
+            Id = id;
             Password = password;
         }
     }

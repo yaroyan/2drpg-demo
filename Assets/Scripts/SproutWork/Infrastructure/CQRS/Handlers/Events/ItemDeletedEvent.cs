@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Yaroyan.SeedWork.DDD.Domain.Event;
 
-namespace Com.Github.Yaroyan.Rpg.CQRS
+namespace Yaroyan.SproutWork.Application.CQRS
 {
-    public class ItemDeletedEvent : IEvents
+    public class ItemDeletedEvent : IEvent
     {
         public int Id { get; private set; }
         public ItemDeletedEvent(int id)

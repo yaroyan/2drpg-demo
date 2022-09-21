@@ -132,8 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 27222326}
-  - component: {fileID: 27222325}
-  - component: {fileID: 27222327}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -141,18 +139,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &27222325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27222324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4a62ed4f14356d45b8ca2b3740fb9e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &27222326
 Transform:
   m_ObjectHideFlags: 0
@@ -168,18 +154,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &27222327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 27222324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04470b1aff62a9e468ffbdee3988f973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,6 +603,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -992182972645978882, guid: 66b1d77fb894a314690fabeeac50c682, type: 3}
+      propertyPath: _environment
+      value: 
+      objectReference: {fileID: 11400000, guid: e3ea45afd481f1d41b449afb4f7ce779, type: 2}
+    - target: {fileID: -992182972645978882, guid: 66b1d77fb894a314690fabeeac50c682, type: 3}
+      propertyPath: parentReference.TypeName
+      value: Com.Github.Yaroyan.Rpg.DI.RootLifetimeScope
+      objectReference: {fileID: 0}
     - target: {fileID: -992182972645978882, guid: 66b1d77fb894a314690fabeeac50c682, type: 3}
       propertyPath: autoInjectGameObjects.Array.data[0]
       value: 

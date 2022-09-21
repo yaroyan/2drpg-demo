@@ -89,38 +89,4 @@ namespace Yaroyan.SeedWork.DDD.Test
             Assert.AreNotEqual(_repository.NextIdentity(), _repository.NextIdentity());
         }
     }
-
-    public class TestInMemoryRepository : InMemoryRepository<TestEntityId, TestAggregateRoot>
-    {
-        public override TestEntityId NextIdentity() => new TestEntityId(Guid.NewGuid());
-    }
-
-    public class TestAggregateRoot : AggregateRoot<TestEntityId>
-    {
-        readonly TestEntityId _id;
-        string _name;
-        public string Name
-        {
-            get => _name;
-            private set => _name = value ?? throw new ArgumentException(nameof(Name));
-        }
-
-        public override TestEntityId Id => _id;
-
-        public TestAggregateRoot(TestEntityId id, string name)
-        {
-            _id = id;
-            Name = name;
-        }
-
-        public void ChangeName(string newName)
-        {
-            Name = newName;
-        }
-    }
-
-    public record TestEntityId : EntityId
-    {
-        public TestEntityId(Guid guid) : base(guid) { }
-    }
 }

@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Yaroyan.SproutWork.Helper;
-using Microsoft.Data.Sqlite;
-using System.Data.Common;
 using System.Linq;
 using System.IO;
 using System;
-using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.InMemoryRepository;
-using Yaroyan.SproutWork.Infrastructure.DataSource;
-using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository;
-using Yaroyan.SproutWork.Infrastructure.DataSource.Dapper.TypeHandler;
-using Yaroyan.SproutWork.Infrastructure.DataSource.Dapper.TypeHandler.Domain.Model.Scene;
+using Yaroyan.SproutWork.Infrastructure.DataSource.TypeHandler;
+using Yaroyan.SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository.SQLiteRepository.TypeHandler;
 using Dapper;
 
 [CreateAssetMenu(menuName = "MyScriptables/Create Environment")]

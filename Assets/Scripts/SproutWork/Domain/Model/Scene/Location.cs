@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using Yaroyan.SeedWork.DDD.Domain.Model;
+using Yaroyan.SeedWork.DDD.Domain.Event;
 
 namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
@@ -10,8 +12,7 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
     /// </summary>
     public class Location : Entity<LocationId>, IAggregateRoot<LocationId>
     {
-        readonly LocationId _id;
-        public override LocationId Id { get => _id; }
+        public override LocationId Id { get; init; }
         SceneId _sceneId;
         public SceneId SceneId
         {
@@ -22,15 +23,22 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
         public string Name { get => _name; private set => _name = !string.IsNullOrWhiteSpace(value) ? value : throw new ArgumentException("must not be null or whitespace.", nameof(Name)); }
         public string Description { get; private set; }
 
-        public Location(LocationId id, SceneId sceneId, string name, string description)
+        public Location(LocationId id, SceneId sceneId, string name, string description) : base(Enumerable.Empty<IEvent>())
         {
-            this._id = id;
+            this.Id = id;
             this.SceneId = sceneId;
             this.Name = name;
             this.Description = description;
         }
 
+        public Location(IEnumerable<IEvent> events) : base(events) { }
+
         public bool Equals(Location other)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Mutate(IEvent @event)
         {
             throw new NotImplementedException();
         }

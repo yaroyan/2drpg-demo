@@ -2,9 +2,9 @@
     "name": "SeedWorkTests",
     "rootNamespace": "",
     "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "SeedWork"
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:5e27e40a815b7dc48bcec01157dacc4f"
     ],
     "includePlatforms": [
         "Editor"

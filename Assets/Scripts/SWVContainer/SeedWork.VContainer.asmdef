@@ -1,0 +1,17 @@
+{
+    "name": "SeedWork.VContainer",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5e27e40a815b7dc48bcec01157dacc4f",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

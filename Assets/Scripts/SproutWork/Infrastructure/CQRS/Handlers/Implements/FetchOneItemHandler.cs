@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Com.Github.Yaroyan.Rpg.Entity;
+using Yaroyan.SeedWork.DDD.Application.CQRS;
+using Yaroyan.SeedWork.DDD.Application.CQRS.Handler;
 
-namespace Com.Github.Yaroyan.Rpg.CQRS
+namespace Yaroyan.SproutWork.Application.CQRS
 {
     public class FetchOneItemHandler : IQueryHandler<FetchOneItemQuery, Item>
     {
@@ -13,7 +15,7 @@ namespace Com.Github.Yaroyan.Rpg.CQRS
             this._query = query;
         }
 
-        public Item Fetch()
+        public Item Handle()
         {
             throw new System.NotImplementedException();
         }

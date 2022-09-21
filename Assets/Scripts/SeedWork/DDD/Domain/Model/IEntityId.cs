@@ -6,6 +6,6 @@ namespace Yaroyan.SeedWork.DDD.Domain.Model
 {
     public interface IEntityId : IEquatable<IEntityId>
     {
-
+        Guid Id { get; init; }
     }
 }

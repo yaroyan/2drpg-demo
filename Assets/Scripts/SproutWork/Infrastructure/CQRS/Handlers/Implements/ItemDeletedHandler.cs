@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Yaroyan.SeedWork.DDD.Application.CQRS;
+using Yaroyan.SeedWork.DDD.Application.CQRS.Handler;
 
-namespace Com.Github.Yaroyan.Rpg.CQRS
+namespace Yaroyan.SproutWork.Application.CQRS
 {
     public class ItemDeletedHandler : IEventHandler<ItemDeletedEvent>
     {

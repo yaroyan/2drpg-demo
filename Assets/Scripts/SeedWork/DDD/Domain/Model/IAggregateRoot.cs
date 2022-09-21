@@ -3,5 +3,6 @@ using System.Collections.Generic;
 
 namespace Yaroyan.SeedWork.DDD.Domain.Model
 {
-    public interface IAggregateRoot<T> : IEntity<T> where T : IEntityId { }
+    public interface IAggregateRoot { }
+    public interface IAggregateRoot<T> : IEntity<T>, IAggregateRoot where T : IEntityId { }
 }

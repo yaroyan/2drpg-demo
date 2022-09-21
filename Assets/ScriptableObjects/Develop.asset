@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Develop
   m_EditorClassIdentifier: 
   <DbConfig>k__BackingField:
-    <IsInMemory>k__BackingField: 0
+    <QueryDBInstanceType>k__BackingField: 2
+    <EventStoreInstanceType>k__BackingField: 0

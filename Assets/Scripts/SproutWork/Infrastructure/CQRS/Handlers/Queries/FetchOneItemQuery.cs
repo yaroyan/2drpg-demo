@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Com.Github.Yaroyan.Rpg.Entity;
+using Yaroyan.SeedWork.DDD.Domain.Event;
 
-namespace Com.Github.Yaroyan.Rpg.CQRS
+namespace Yaroyan.SproutWork.Application.CQRS
 {
     public class FetchOneItemQuery : IQuery<Item>
     {

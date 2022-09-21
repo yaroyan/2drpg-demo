@@ -2,7 +2,9 @@ using VContainer;
 using VContainer.Unity;
 using UnityEngine;
 using MessagePipe;
-using Com.Github.Yaroyan.Rpg.CQRS;
+using Yaroyan.SproutWork.Application.CQRS;
+using Yaroyan.SeedWork.DDD.Application.CQRS.Handler;
+using Yaroyan.SeedWork.DDD.Application.CQRS;
 using System;
 
 namespace Com.Github.Yaroyan.Rpg.DI
