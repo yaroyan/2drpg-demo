@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using Yaroyan.SeedWork.DDD.Domain.Event;
 using NUnit.Framework;
+using Yaroyan.SeedWork.DDD.Application.CQRS.Command;
+using Yaroyan.SeedWork.DDD.Application.CQRS.Query;
 
 namespace Yaroyan.SeedWork.DDD.Test
 {

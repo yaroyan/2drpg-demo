@@ -8,6 +8,8 @@ using Yaroyan.SeedWork.DDD.Domain.Model;
 using Yaroyan.SeedWork.DDD.Domain.Event;
 using Yaroyan.SeedWork.DDD.Application;
 using Yaroyan.SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.EventSourcing;
+using Yaroyan.SeedWork.DDD.Application.CQRS.Query;
+using Yaroyan.SeedWork.DDD.Application.CQRS.Command;
 
 namespace Yaroyan.SeedWork.DDD.Test
 {
@@ -39,12 +41,9 @@ namespace Yaroyan.SeedWork.DDD.Test
 
         public TestAggregateRoot(IEnumerable<IEvent> events) : base(events) { }
 
-        public TestAggregateRoot(TestEntityId id, string name) : base(Enumerable.Empty<IEvent>()) { }
+        public TestAggregateRoot(TestEntityId id, string name) : base(new IEvent[] { }) { }
 
-        public void ChangeName(string newName)
-        {
-            Name = newName;
-        }
+        public void ChangeName(string newName) => Apply(new TestChangeNameEvent(this.Id, newName));
 
         protected override void Mutate(IEvent @event)
         {
@@ -70,12 +69,7 @@ namespace Yaroyan.SeedWork.DDD.Test
 
     public class TestApplicationService : ApplicationService
     {
-        readonly TestInMemoryUnitOfWork _unitOfWork2;
-
-        public TestApplicationService(IEventStore eventStore, TestInMemoryUnitOfWork unitOfWork) : base(eventStore, unitOfWork)
-        {
-            _unitOfWork2 = unitOfWork;
-        }
+        public TestApplicationService(IEventStore eventStore, TestInMemoryUnitOfWork unitOfWork) : base(eventStore, unitOfWork) { }
 
         public override void Execute(ICommand command)
         {
