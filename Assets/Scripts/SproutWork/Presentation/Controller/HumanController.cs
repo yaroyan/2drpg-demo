@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Com.Github.Yaroyan.Constant;
+using Yaroyan.SproutWork.Domain.Model.Constant;
 
-namespace Com.Github.Yaroyan.Rpg.Controller
+namespace Yaroyan.SproutWork.Presentation.Controller
 {
     public class HumanController : MonoBehaviour, IPlayable
     {

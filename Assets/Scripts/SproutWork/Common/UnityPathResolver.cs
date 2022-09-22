@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Yaroyan.SproutWork.Helper
+namespace Yaroyan.SproutWork.Common
 {
     public static class UnityPathResolver
     {

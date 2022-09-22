@@ -1,7 +1,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Com.Github.Yaroyan.Rpg.DI
+namespace Yaroyan.SproutWork.DI
 {
     /// <summary>
     /// Root DI Container

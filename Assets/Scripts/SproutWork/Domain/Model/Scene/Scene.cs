@@ -42,8 +42,3 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
         }
     }
 }
-
-/**
- * Delete
- * Scene&Location&Route
- */
