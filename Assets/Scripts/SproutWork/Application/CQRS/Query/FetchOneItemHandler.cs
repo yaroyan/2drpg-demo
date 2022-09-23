@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Yaroyan.SproutWork.Domain.Model.Other;
-using Yaroyan.SeedWork.DDD.Application.CQRS.Query;
+using Yaroyan.SeedWork.DDD4U.Application.CQRS.Query;
 
 namespace Yaroyan.SproutWork.Application.CQRS.Query
 {

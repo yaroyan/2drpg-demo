@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.SeedWork.DDD.Domain.Model;
+using Yaroyan.SeedWork.DDD4U.Domain.Model;
 
 namespace Yaroyan.SproutWork.Domain.Model.SaveData
 {

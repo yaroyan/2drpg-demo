@@ -5,9 +5,9 @@ using MessagePipe;
 using Yaroyan.SproutWork.Application.CQRS.Command;
 using Yaroyan.SproutWork.Application.CQRS.Event;
 using Yaroyan.SproutWork.Application.CQRS.Query;
-using Yaroyan.SeedWork.DDD.Application.CQRS.Command;
-using Yaroyan.SeedWork.DDD.Application.CQRS.Event;
-using Yaroyan.SeedWork.DDD.Application.CQRS.Query;
+using Yaroyan.SeedWork.DDD4U.Application.CQRS.Command;
+using Yaroyan.SeedWork.DDD4U.Application.CQRS.Event;
+using Yaroyan.SeedWork.DDD4U.Application.CQRS.Query;
 using Yaroyan.SproutWork.Domain.Event.Other;
 using System;
 

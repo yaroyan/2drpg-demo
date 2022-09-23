@@ -32,6 +32,6 @@ public class SceneApplicationService
     {
         Scene scene = _sceneRepository.Find(new SceneId(id));
         if (scene is null) throw new InvalidOperationException($"Not found. Scene id: {id}");
-        _sceneRepository.Delete(scene);
+        _sceneRepository.Delete(scene.Id);
     }
 }

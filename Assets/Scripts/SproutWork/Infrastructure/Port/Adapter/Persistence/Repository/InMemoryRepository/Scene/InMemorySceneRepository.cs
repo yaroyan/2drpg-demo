@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Yaroyan.SproutWork.Domain.Model.Scene;
-using Yaroyan.SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository.InMemoryRepository;
+using Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Repository.InMemoryRepository;
 
 namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.InMemoryRepository.Scene
 {

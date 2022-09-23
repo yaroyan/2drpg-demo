@@ -5,7 +5,7 @@ using Yaroyan.SproutWork.Domain.Model.Scene;
 using Yaroyan.SproutWork.Domain.Model.User;
 using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository.Scene;
 using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository.User;
-using Yaroyan.SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository;
+using Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Repository;
 
 namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository
 {

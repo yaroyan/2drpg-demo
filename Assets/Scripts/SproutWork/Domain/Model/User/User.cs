@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using Yaroyan.SeedWork.DDD.Domain.Model;
-using Yaroyan.SeedWork.DDD.Domain.Event;
+using Yaroyan.SeedWork.DDD4U.Domain.Model;
+using Yaroyan.SeedWork.DDD4U.Domain.Event;
 
 namespace Yaroyan.SproutWork.Domain.Model.User
 {
-    public class User : Entity<UserId>, IAggregateRoot<UserId>
+    public class User : AggregateRoot<UserId>, IAggregateRoot<UserId>
     {
         public User(IEnumerable<IEvent> events) : base(events)
         {

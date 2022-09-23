@@ -1,0 +1,17 @@
+{
+    "name": "SeedWork.DDD4U.Dapper",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5e27e40a815b7dc48bcec01157dacc4f",
+        "GUID:4fe5cda38b60ebc4e86169f021b816aa"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

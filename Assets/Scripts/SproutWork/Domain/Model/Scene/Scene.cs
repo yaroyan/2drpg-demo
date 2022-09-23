@@ -1,21 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using Yaroyan.SeedWork.DDD.Domain.Model;
+using System.Linq;
+using Yaroyan.SeedWork.DDD4U.Domain.Model;
+using Yaroyan.SeedWork.DDD4U.Domain.Event;
 
 namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
     /// <summary>
     /// Scene Entity.
     /// </summary>
-    public class Scene : IAggregateRoot<SceneId>
+    public class Scene : AggregateRoot<SceneId>
     {
-        readonly SceneId _id;
-        public SceneId Id
-        {
-            get => _id;
-            init => _id = value ?? throw new ArgumentNullException(nameof(Id));
-        }
         public SceneId ParentId { get; private set; }
         SceneContext _sceneContext;
         public SceneContext SceneContext
@@ -23,20 +19,16 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
             get => _sceneContext;
             private set => _sceneContext = value ?? throw new ArgumentNullException(nameof(SceneContext));
         }
+        public override SceneId Id { get => throw new NotImplementedException(); init => throw new NotImplementedException(); }
 
-        public Scene(SceneId sceneId, SceneContext sceneContext, SceneId parentId)
+        public Scene(SceneId sceneId, SceneContext sceneContext, SceneId parentId) : base(Enumerable.Empty<IEvent>())
         {
-            _id = sceneId;
+            Id = sceneId;
             SceneContext = sceneContext;
             ParentId = parentId;
         }
 
-        public bool Equals(Scene other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Equals(IEntity<SceneId> other)
+        protected override void Mutate(IEvent @event)
         {
             throw new NotImplementedException();
         }

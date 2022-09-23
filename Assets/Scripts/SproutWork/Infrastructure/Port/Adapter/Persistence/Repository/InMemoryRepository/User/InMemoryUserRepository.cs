@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Yaroyan.SproutWork.Domain.Model.User;
-using Yaroyan.SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository.InMemoryRepository;
+using Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Repository.InMemoryRepository;
 
 namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.InMemoryRepository.User
 {

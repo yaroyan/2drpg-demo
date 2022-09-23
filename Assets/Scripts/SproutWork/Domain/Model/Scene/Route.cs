@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using Yaroyan.SeedWork.DDD.Domain.Model;
-using Yaroyan.SeedWork.DDD.Domain.Event;
+using Yaroyan.SeedWork.DDD4U.Domain.Model;
+using Yaroyan.SeedWork.DDD4U.Domain.Event;
 
 namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
     /// <summary>
     /// An entity that represents a path to a destination.
     /// </summary>
-    public class Route : Entity<RouteId>, IAggregateRoot<RouteId>
+    public class Route : AggregateRoot<RouteId>, IAggregateRoot<RouteId>
     {
         public override RouteId Id { get; init; }
         LocationId _originId;

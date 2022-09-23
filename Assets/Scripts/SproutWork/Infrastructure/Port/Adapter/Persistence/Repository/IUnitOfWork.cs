@@ -5,7 +5,7 @@ using Yaroyan.SproutWork.Domain.Model.User;
 
 namespace Yaroyan.SproutWork.Infrastructure.DataSource
 {
-    public interface IUnitOfWork : SeedWork.DDD.Infrastructure.Port.Adapter.Persistence.Repository.IUnitOfWork
+    public interface IUnitOfWork : SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Repository.IUnitOfWork
     {
         ISceneRepository SceneRepository { get; }
         ILocationRepository LocationRepository { get; }

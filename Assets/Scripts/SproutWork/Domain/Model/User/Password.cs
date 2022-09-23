@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.SeedWork.DDD.Domain.Model;
+using Yaroyan.SeedWork.DDD4U.Domain.Model;
 using System.Text.RegularExpressions;
 
 

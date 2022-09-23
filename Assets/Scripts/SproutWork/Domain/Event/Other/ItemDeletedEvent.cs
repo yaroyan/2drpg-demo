@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.SeedWork.DDD.Domain.Event;
+using Yaroyan.SeedWork.DDD4U.Domain.Event;
 
 namespace Yaroyan.SproutWork.Domain.Event.Other
 {

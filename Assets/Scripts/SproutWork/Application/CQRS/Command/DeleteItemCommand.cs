@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.SeedWork.DDD.Application.CQRS.Command;
+using Yaroyan.SeedWork.DDD4U.Application.CQRS.Command;
 
 namespace Yaroyan.SproutWork.Application.CQRS.Command
 {

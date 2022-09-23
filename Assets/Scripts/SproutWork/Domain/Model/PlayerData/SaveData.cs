@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using Yaroyan.SeedWork.DDD.Domain.Event;
-using Yaroyan.SeedWork.DDD.Domain.Model;
+using Yaroyan.SeedWork.DDD4U.Domain.Event;
+using Yaroyan.SeedWork.DDD4U.Domain.Model;
 
 namespace Yaroyan.SproutWork.Domain.Model.SaveData
 {
-    public class SaveData : Entity<SaveDataId>, IAggregateRoot<SaveDataId>
+    public class SaveData : AggregateRoot<SaveDataId>, IAggregateRoot<SaveDataId>
     {
         // repositoryId
         // branchId
