@@ -7,6 +7,11 @@ namespace Yaroyan.SeedWork.DDD4U.Domain.Model
 {
     public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot<T> where T : IEntityId
     {
+        protected AggregateRoot()
+        {
+
+        }
+
         public AggregateRoot(IEnumerable<IEvent> events)
         {
             foreach (var @event in events) Mutate(@event);

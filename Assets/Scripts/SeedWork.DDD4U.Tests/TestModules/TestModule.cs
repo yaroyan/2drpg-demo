@@ -37,15 +37,13 @@ namespace Yaroyan.SeedWork.DDD4U.Test
             get => _name;
             private set => _name = value ?? throw new ArgumentException(nameof(Name));
         }
-
-        public override TestEntityId Id { get; init; }
+        TestEntityId _id;
+        public override TestEntityId Id { get => _id; }
 
         public TestAggregateRoot(IEnumerable<IEvent> events) : base(events) { }
 
-        public TestAggregateRoot(TestEntityId id, string name) : base(new IEvent[] { }) {
-            Id = id;
-            _name = name;
-        }
+        public TestAggregateRoot(TestEntityId id, string name) => Apply(new TestRegisteredEvent(id, name));
+
 
         public void ChangeName(string newName) => Apply(new TestChangeNameEvent(this.Id, newName));
 
@@ -54,6 +52,9 @@ namespace Yaroyan.SeedWork.DDD4U.Test
             switch (@event)
             {
                 case TestChangeNameEvent _event:
+                    When(_event);
+                    break;
+                case TestRegisteredEvent _event:
                     When(_event);
                     break;
                 default:
@@ -65,38 +66,24 @@ namespace Yaroyan.SeedWork.DDD4U.Test
         {
             Name = @event.Name;
         }
+
+        void When(TestRegisteredEvent @event)
+        {
+            _id = @event.Id;
+            Name = @event.Name;
+        }
     }
 
+    [Serializable]
     public sealed record TestEntityId(Guid Id) : EntityId(Id) { }
     public interface ITestEvent : IEvent { }
-    public sealed record TestChangeNameEvent(TestEntityId Id, string Name) : ITestEvent { }
-    public sealed record TestChangeNameCommand(TestEntityId Id, string Name) : ICommand { }
-
-    public class TestApplicationService : ApplicationService
-    {
-        readonly IPublisher<ITestEvent> _publisher;
-        public TestApplicationService(IEventStore eventStore, IUnitOfWork unitOfWork, ISnapshotRepository snapshotRepository, IPublisher<ITestEvent> publisher) : base(eventStore, unitOfWork, snapshotRepository)
-        {
-            _publisher = publisher;
-        }
-
-        public override void Execute(ICommand command)
-        {
-            switch (command)
-            {
-                case TestChangeNameCommand _command:
-                    When(_command);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        public void When(TestChangeNameCommand command) => Update<TestEntityId, TestAggregateRoot>(command.Id, domain => domain.ChangeName(command.Name));
-
-        protected override void Publish(IEnumerable<IEvent> events)
-        {
-            foreach (ITestEvent @event in events) _publisher.Publish(@event);
-        }
-    }
+    [Serializable]
+    public sealed record TestRegisteredCommand(string Name) : ICommand;
+    [Serializable]
+    public sealed record TestRegisteredEvent(TestEntityId Id, string Name) : ITestEvent;
+    [Serializable]
+    public sealed record TestChangeNameEvent(TestEntityId Id, string Name) : ITestEvent;
+    [Serializable]
+    public sealed record TestChangeNameCommand(TestEntityId Id, string Name) : ICommand;
 }
+

@@ -54,7 +54,7 @@ namespace Yaroyan.SeedWork.DDD4U.Test
         {
             var aggreateRoot = new TestAggregateRoot(_repository.NextIdentity(), "");
             _repository.Save(aggreateRoot);
-            _repository.Delete(aggreateRoot);
+            _repository.Delete(aggreateRoot.Id);
             Assert.That(!_repository.FindAll().Any());
         }
 

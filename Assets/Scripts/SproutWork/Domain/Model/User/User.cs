@@ -13,7 +13,8 @@ namespace Yaroyan.SproutWork.Domain.Model.User
         {
         }
 
-        public override UserId Id { get; init; }
+        readonly UserId _id;
+        public override UserId Id { get => _id; }
         public Password Password { get; private set; }
 
         protected override void Mutate(IEvent @event)
@@ -23,7 +24,7 @@ namespace Yaroyan.SproutWork.Domain.Model.User
 
         public User(UserId id, Password password) : base(Enumerable.Empty<IEvent>())
         {
-            Id = id;
+            _id = id;
             Password = password;
         }
     }

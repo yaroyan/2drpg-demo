@@ -7,7 +7,7 @@ namespace Yaroyan.SeedWork.DDD4U.Domain.Model
 {
     public abstract class Entity<T> : IEntity<T> where T : IEntityId
     {
-        public abstract T Id { get; init; }
+        public abstract T Id { get; }
 
         public override bool Equals(object obj) => Equals(obj as Entity<T>);
 

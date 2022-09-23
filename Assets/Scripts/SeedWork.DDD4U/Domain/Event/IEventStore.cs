@@ -20,6 +20,7 @@ namespace Yaroyan.SeedWork.DDD4U.Domain.Event
         /// since <paramref name="expectedVersion"/>
         /// </exception>
         void AppendToStream(IEntityId id, long expectedVersion, IEnumerable<IEvent> events);
+        T NextIdentity<T>(Func<Guid, T> generator);
     }
 
     public class EventStream

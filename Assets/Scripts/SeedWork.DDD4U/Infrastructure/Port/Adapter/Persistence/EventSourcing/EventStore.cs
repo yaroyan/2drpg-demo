@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Yaroyan.SeedWork.DDD4U.Domain.Event;
 using Yaroyan.SeedWork.DDD4U.Domain.Model;
+using VContainer;
 
 namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSourcing
 {
@@ -34,6 +35,7 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
             }
         }
 
+        [Inject]
         public EventStore(IAppendOnlyStore appendOnlyStore)
         {
             _appendOnlyStore = appendOnlyStore;
@@ -95,5 +97,7 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
         {
             return LoadEventStream(id, skipEvents, int.MaxValue);
         }
+
+        public T NextIdentity<T>(Func<Guid, T> generator) => generator(Guid.NewGuid());
     }
 }

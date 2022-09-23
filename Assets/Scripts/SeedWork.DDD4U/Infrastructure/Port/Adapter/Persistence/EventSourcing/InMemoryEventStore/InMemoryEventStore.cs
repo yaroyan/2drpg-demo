@@ -11,7 +11,6 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
     {
         readonly ConcurrentDictionary<Guid, DataWithVersion[]> _eventStore = new();
         DataWithName[] _all = new DataWithName[0];
-        readonly Dictionary<Guid, IEvent> _snapshotStore = new();
 
         public void Append(Guid Id, byte[] data, long expectedStreamVersion = -1)
         {

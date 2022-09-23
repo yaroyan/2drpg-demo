@@ -12,7 +12,8 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
     /// </summary>
     public class Route : AggregateRoot<RouteId>, IAggregateRoot<RouteId>
     {
-        public override RouteId Id { get; init; }
+        readonly RouteId _id;
+        public override RouteId Id { get => _id; }
         LocationId _originId;
         public LocationId OriginId { get => _originId; private set => _originId = value ?? throw new ArgumentNullException(nameof(OriginId)); }
         LocationId _destinationId;
@@ -22,7 +23,7 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
 
         public Route(RouteId id, LocationId originId, LocationId destinationId, TravelTime time) : base(Enumerable.Empty<IEvent>())
         {
-            Id = id;
+            _id = id;
             OriginId = originId;
             DestinationId = destinationId;
             Time = time;

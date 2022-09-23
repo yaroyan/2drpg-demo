@@ -13,7 +13,8 @@ namespace Yaroyan.SproutWork.Domain.Model.SaveData
         // branchId
         // commitIds
         static readonly int s_MaxMemoCount = 140;
-        public override SaveDataId Id { get; init; }
+        readonly SaveDataId _id;
+        public override SaveDataId Id { get => _id; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
         public DateTime AccessedAt { get; private set; }
@@ -22,7 +23,7 @@ namespace Yaroyan.SproutWork.Domain.Model.SaveData
         public bool IsFavorite { get; private set; }
         public SaveData(SaveDataId saveDataId, bool isFavorite, DateTime createdAt, DateTime updatedAt, DateTime accessedAt, string memo) : base(Enumerable.Empty<IEvent>())
         {
-            Id = saveDataId;
+            _id = saveDataId;
             IsFavorite = isFavorite;
             CreatedAt = createdAt;
             UpdatedAt = updatedAt;

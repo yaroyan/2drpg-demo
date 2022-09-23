@@ -12,7 +12,8 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
     /// </summary>
     public class Location : AggregateRoot<LocationId>, IAggregateRoot<LocationId>
     {
-        public override LocationId Id { get; init; }
+        readonly LocationId _id;
+        public override LocationId Id { get => _id; }
         SceneId _sceneId;
         public SceneId SceneId
         {
@@ -25,7 +26,7 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
 
         public Location(LocationId id, SceneId sceneId, string name, string description) : base(Enumerable.Empty<IEvent>())
         {
-            this.Id = id;
+            this._id = id;
             this.SceneId = sceneId;
             this.Name = name;
             this.Description = description;

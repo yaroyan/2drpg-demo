@@ -19,11 +19,12 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
             get => _sceneContext;
             private set => _sceneContext = value ?? throw new ArgumentNullException(nameof(SceneContext));
         }
-        public override SceneId Id { get => throw new NotImplementedException(); init => throw new NotImplementedException(); }
+        readonly SceneId _id;
+        public override SceneId Id { get => _id; }
 
         public Scene(SceneId sceneId, SceneContext sceneContext, SceneId parentId) : base(Enumerable.Empty<IEvent>())
         {
-            Id = sceneId;
+            _id = sceneId;
             SceneContext = sceneContext;
             ParentId = parentId;
         }

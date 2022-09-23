@@ -16,12 +16,10 @@ namespace Yaroyan.SeedWork.DDD4U.Application
         static readonly ConcurrentDictionary<Type, Func<IEnumerable<IEvent>, IAggregateRoot>> s_cachedInstantiationExpression = new();
         protected readonly ISnapshotRepository _snapshotRepository;
         protected readonly IEventStore _eventStore;
-        protected readonly IUnitOfWork _unitOfWork;
 
-        protected ApplicationService(IEventStore eventStore, IUnitOfWork unitOfWork, ISnapshotRepository snapshotRepository)
+        protected ApplicationService(IEventStore eventStore, ISnapshotRepository snapshotRepository)
         {
             _eventStore = eventStore;
-            _unitOfWork = unitOfWork;
             _snapshotRepository = snapshotRepository;
         }
 
@@ -51,6 +49,12 @@ namespace Yaroyan.SeedWork.DDD4U.Application
                 _eventStore.AppendToStream(id, e.ActualVersion, aggregateRoot.DomainEvents);
                 Publish(aggregateRoot.DomainEvents);
             }
+        }
+
+        protected virtual void Create<T, U>(Func<U> instantiator) where T : IEntityId where U : AggregateRoot<T> {
+            var aggregateRoot = instantiator.Invoke();
+            _eventStore.AppendToStream(aggregateRoot.Id, -1, aggregateRoot.DomainEvents);
+            Publish(aggregateRoot.DomainEvents);
         }
 
         protected abstract void Publish(IEnumerable<IEvent> events);

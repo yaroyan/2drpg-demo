@@ -1,160 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using System;
 using System.Linq;
+using VContainer;
+using MessagePipe;
+using UnityEngine;
+using Yaroyan.SeedWork.DDD4U.Application;
 using Yaroyan.SeedWork.DDD4U.Domain.Event;
-using NUnit.Framework;
-using Yaroyan.SeedWork.DDD4U.Application.CQRS.Command;
-using Yaroyan.SeedWork.DDD4U.Application.CQRS.Query;
+using Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSourcing;
 
 namespace Yaroyan.SeedWork.DDD4U.Test
 {
-    public class EventSourcingTest
+    public class EventSourcingTest : IDisposable
     {
+        IObjectResolver _resolver;
+        IApplicationService _applicationService;
+        ISubscriber<ITestEvent> _subscriber;
+        IDisposable _disposable;
+        IAppendOnlyStore _appendOnlyStore;
+        IEventStore _eventStore;
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            var builder = new ContainerBuilder();
+            var options = builder.RegisterMessagePipe();
+            builder.RegisterMessageBroker<ITestEvent>(options);
+            builder.Register<ISnapshotRepository, InMemorySnapshotRepository>(Lifetime.Singleton);
+            builder.Register<IAppendOnlyStore, InMemoryEventStore>(Lifetime.Singleton);
+            builder.Register<IEventStore, EventStore>(Lifetime.Singleton);
+            builder.Register<IApplicationService, TestApplicationService>(Lifetime.Singleton);
+            _resolver = builder.Build();
+            _applicationService = _resolver.Resolve<IApplicationService>();
+            _subscriber = _resolver.Resolve<ISubscriber<ITestEvent>>();
+            var bag = DisposableBag.CreateBuilder();
+            _subscriber.Subscribe(e => Debug.Log(e.ToString())).AddTo(bag);
+            _disposable = bag.Build();
+            _appendOnlyStore = _resolver.Resolve<IAppendOnlyStore>();
+            _eventStore = _resolver.Resolve<IEventStore>();
+        }
+
         [Test]
-        private void Test()
+        public void CreateInstance()
         {
-            var broker = new EventBroker();
-            var character = new Character(broker);
-            broker.Command(new ChangeAgeCommand(character, 123));
-            int age = broker.Query<int>(new AgeQuery { Target = character });
-            foreach (var b in broker.AllEvents) Console.WriteLine(b);
-            broker.UndoLast();
-            foreach (var b in broker.AllEvents) Console.WriteLine(b);
-        }
-    }
-
-    public class CurrentState { }
-
-    public class Character
-    {
-        public string Name { get; private set; }
-        public CharacterId CharacterId { get; init; }
-        List<IEvent> streams;
-        public IEnumerable<IEvent> Streams { get => streams; }
-        readonly CurrentState _currentState = new();
-
-        int age;
-        EventBroker broker;
-        public Character(EventBroker broker)
-        {
-            this.broker = broker;
-            broker.Commands += BrokerOnCommands;
-            broker.Queries += BrokerOnQueries;
+            Assert.That(_applicationService is not null);
         }
 
-        public void AddEvent(IEvent @event)
+        [Test]
+        public void Persist()
         {
-            switch (@event)
-            {
-                case NameChangedEvent nameChangedEvent:
-                    Apply(nameChangedEvent);
-                    break;
-            }
-            streams.Add(@event);
-        }
-
-        void Apply(NameChangedEvent @event)
-        {
-            Name = @event.Name;
-        }
-
-        public Character(CharacterId id)
-        {
-            CharacterId = id;
-        }
-
-        void BrokerOnQueries(object sender, IQuery e)
-        {
-            switch (e)
-            {
-                case AgeQuery query when query.Target == this:
-                    query.Result = age;
-                    break;
-            }
-        }
-
-        void BrokerOnCommands(object sender, ICommand e)
-        {
-            switch (e)
-            {
-                case ChangeAgeCommand command when command.Target == this && command.Register:
-                    broker.AllEvents.Add(new AgeChangedEvent(this, age, command.Age));
-                    age = command.Age;
-                    break;
-            }
-        }
-    }
-
-    public record NameChangedEvent(string Name) { }
-
-    public record CharacterId(string id) { }
-
-    public class EventBroker
-    {
-        public IList<IEvent> AllEvents { get; private set; } = new List<IEvent>();
-        public event EventHandler<ICommand> Commands;
-        public event EventHandler<IQuery> Queries;
-
-        public void Command(ICommand c)
-        {
-            Commands?.Invoke(this, c);
-        }
-
-        public T Query<T>(Query q)
-        {
-            Queries?.Invoke(this, q);
-            return (T)q.Result;
-        }
-
-        public void UndoLast()
-        {
-            switch (AllEvents.LastOrDefault())
-            {
-                case AgeChangedEvent @event:
-                    Command(new ChangeAgeCommand(@event.Target, @event.OldValue) { Register = false });
-                    AllEvents.Remove(@event);
-                    break;
-            }
-        }
-    }
-    public class Event : IEvent { }
-
-    public class AgeChangedEvent : Event
-    {
-        public Character Target;
-        public int OldValue, NewValue;
-        public AgeChangedEvent(Character target, int oldValue, int newValue)
-        {
-            Target = target;
-            OldValue = oldValue;
-            NewValue = newValue;
-        }
-        public override string ToString()
-        {
-            return $"Age changed from {OldValue} to {NewValue}.";
-        }
-    }
-    public class Query : IQuery
-    {
-        public object Result;
-    }
-    public class AgeQuery : Query
-    {
-        public Character Target;
-    }
-    public class Command : EventArgs, ICommand
-    {
-        public bool Register = true;
-    }
-    public class ChangeAgeCommand : Command
-    {
-        public Character Target;
-        public int Age;
-        public ChangeAgeCommand(Character target, int age)
-        {
-            this.Target = target;
-            this.Age = age;
+            _applicationService.Execute(new TestRegisteredCommand("test"));
+            var data = _appendOnlyStore.ReadRecords(0, int.MaxValue).First();
+            var stream = _eventStore.LoadEventStream(new TestEntityId(data.Id));
+            var ar = new TestAggregateRoot(stream.Events);
+            Debug.Log(stream.Events.First().ToString());
+            Assert.That(ar is not null);
         }
     }
 }
