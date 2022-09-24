@@ -22,5 +22,7 @@ namespace Yaroyan.SeedWork.Common.JSON
         public T Deserialize<T>(Type type, string json) => _deserializer.Deserialize<T>(type, json);
 
         public string Serialize(object obj) => _serializer.Serialize(obj);
+
+        public string Serialize<T>(T obj) => _serializer.Serialize(obj);
     }
 }
