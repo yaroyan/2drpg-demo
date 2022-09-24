@@ -7,5 +7,6 @@ namespace Yaroyan.SeedWork.Common.JSON
     public class JsonSerializer : IJsonSerializer
     {
         public string Serialize(object obj) => JsonConvert.SerializeObject(obj);
+        public string Serialize<T>(T obj) => JsonConvert.SerializeObject(obj);
     }
 }
