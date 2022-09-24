@@ -20,12 +20,14 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Reposit
         /// If performance issues are a concern, implement it appropriately in a subclass.
         /// </summary>
         /// <returns></returns>
-        public T NextIdentity()
+        public T NextIdentity() => s_cachedInstantiationExpression.GetOrAdd(typeof(T), CompileExpression())(Guid.NewGuid().ToString());
+
+        Func<string, T> CompileExpression()
         {
-            var expression = s_cachedInstantiationExpression.GetOrAdd(
-                            typeof(T),
-                            Expression.Lambda<Func<string, T>>(Expression.New(typeof(T).GetConstructor(new[] { typeof(string) }), Expression.Parameter(typeof(string), "Id"))).Compile());
-            return expression(Guid.NewGuid().ToString());
+            var ctor = typeof(T).GetConstructor(new[] { typeof(string) });
+            var param = Expression.Parameter(typeof(string), "Id");
+            var body = Expression.New(ctor, param);
+            return Expression.Lambda<Func<string, T>>(body, param).Compile();
         }
     }
 }

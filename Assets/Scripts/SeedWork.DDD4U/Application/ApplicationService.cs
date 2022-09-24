@@ -51,8 +51,9 @@ namespace Yaroyan.SeedWork.DDD4U.Application
             }
         }
 
-        protected virtual void Create<T, U>(Func<U> instantiator) where T : IEntityId where U : AggregateRoot<T> {
-            var aggregateRoot = instantiator.Invoke();
+        protected virtual void Create<T, U>(Func<U> instantiator) where T : IEntityId where U : AggregateRoot<T>
+        {
+            var aggregateRoot = instantiator();
             _eventStore.AppendToStream(aggregateRoot.Id, -1, aggregateRoot.DomainEvents);
             Publish(aggregateRoot.DomainEvents);
         }
@@ -81,14 +82,17 @@ namespace Yaroyan.SeedWork.DDD4U.Application
             else
             {
                 var stream = _eventStore.LoadEventStream(id);
-                return (Version: stream.Version, AggregateRoot: (U)GetInstantiationExpression<U>()(stream.Events));
+                return (Version: stream.Version, AggregateRoot: (U)s_cachedInstantiationExpression.GetOrAdd(typeof(T), CompileExpression<T>())(stream.Events));
             }
         }
 
-        Func<IEnumerable<IEvent>, IAggregateRoot> GetInstantiationExpression<T>()
-            => s_cachedInstantiationExpression.GetOrAdd(
-                typeof(T),
-                Expression.Lambda<Func<IEnumerable<IEvent>, IAggregateRoot>>(Expression.New(typeof(T).GetConstructor(new[] { typeof(IEnumerable<IEvent>) }), Expression.Parameter(typeof(IEnumerable<IEvent>), "events"))).Compile());
+        Func<IEnumerable<IEvent>, IAggregateRoot> CompileExpression<T>()
+        {
+            var ctor = typeof(T).GetConstructor(new[] { typeof(IEnumerable<IEvent>) });
+            var param = Expression.Parameter(typeof(IEnumerable<IEvent>), "events");
+            var body = Expression.New(ctor, param);
+            return Expression.Lambda<Func<IEnumerable<IEvent>, IAggregateRoot>>(body, param).Compile();
+        }
 
         protected virtual void GenerateSnapshot<T, U>(T id) where T : IEntityId where U : AggregateRoot<T>
         {

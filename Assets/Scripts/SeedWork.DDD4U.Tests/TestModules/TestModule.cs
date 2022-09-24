@@ -38,13 +38,13 @@ namespace Yaroyan.SeedWork.DDD4U.Test
 
         public TestAggregateRoot(IEnumerable<IEvent> events) : base(events) { }
 
-        public TestAggregateRoot(TestEntityId id, string name) => Apply(new TestRegisteredEvent(id, name));
+        public TestAggregateRoot(TestEntityId id, string name) => Apply(new TestRegisteredEvent(id.Id, ++_version, DateTime.Now, name));
 
-
-        public void ChangeName(string newName) => Apply(new TestChangeNameEvent(this.Id, newName));
+        public void ChangeName(string newName) => Apply(new TestChangeNameEvent(this.Id.Id, ++_version, DateTime.Now, newName));
 
         protected override void Mutate(IEvent @event)
         {
+            _version = @event.Sequence;
             switch (@event)
             {
                 case TestChangeNameEvent _event:
@@ -65,7 +65,7 @@ namespace Yaroyan.SeedWork.DDD4U.Test
 
         void When(TestRegisteredEvent @event)
         {
-            _id = @event.Id;
+            _id = new TestEntityId(@event.AggregateRootId);
             Name = @event.Name;
         }
     }
@@ -76,9 +76,9 @@ namespace Yaroyan.SeedWork.DDD4U.Test
     [Serializable]
     public sealed record TestRegisteredCommand(string Name) : ICommand;
     [Serializable]
-    public sealed record TestRegisteredEvent(TestEntityId Id, string Name) : Event, ITestEvent;
+    public sealed record TestRegisteredEvent(string AggregateRootId, long Sequence, DateTime OccuredOn, string Name) : Event(AggregateRootId, Sequence, OccuredOn), ITestEvent;
     [Serializable]
-    public sealed record TestChangeNameEvent(TestEntityId Id, string Name) : Event, ITestEvent;
+    public sealed record TestChangeNameEvent(string AggregateRootId, long Sequence, DateTime OccuredOn, string Name) : Event(AggregateRootId, Sequence, OccuredOn), ITestEvent;
     [Serializable]
     public sealed record TestChangeNameCommand(TestEntityId Id, string Name) : ICommand;
 }

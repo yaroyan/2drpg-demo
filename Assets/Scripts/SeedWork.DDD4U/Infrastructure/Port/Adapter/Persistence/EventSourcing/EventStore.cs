@@ -2,74 +2,52 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using Yaroyan.SeedWork.DDD4U.Domain.Event;
 using Yaroyan.SeedWork.DDD4U.Domain.Model;
-using VContainer;
 using LiteDB;
+using Yaroyan.SeedWork.Common.JSON;
 
 namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSourcing
 {
-    /// <summary>
-    /// Actual implementation of <see cref="IEventStore"/>, which deals with
-    /// serialization and naming in order to provide bridge between event-centric
-    /// domain code and byte-based append-only persistence
-    /// </summary>
     public class EventStore : IEventStore
     {
-        readonly BinaryFormatter _formatter = new BinaryFormatter();
+        readonly IAppendOnlyStore _appendOnlyStore;
+        readonly IJsonMapper _jsonMapper;
 
-        byte[] SerializeEvent(IEvent[] e)
-        {
-            using (var mem = new MemoryStream())
-            {
-                _formatter.Serialize(mem, e);
-                return mem.ToArray();
-            }
-        }
-
-        IEvent[] DeserializeEvent(byte[] data)
-        {
-            using (var mem = new MemoryStream(data))
-            {
-                return (IEvent[])_formatter.Deserialize(mem);
-            }
-        }
-
-        [Inject]
-        public EventStore(IAppendOnlyStore appendOnlyStore)
+        public EventStore(IAppendOnlyStore appendOnlyStore, IJsonMapper jsonMapper)
         {
             _appendOnlyStore = appendOnlyStore;
-        }
-
-        readonly IAppendOnlyStore _appendOnlyStore;
-        public EventStream LoadEventStream(IEntityId id, long skip, int take)
-        {
-            var name = IdentityToGuid(id);
-            var records = _appendOnlyStore.ReadRecords(name, skip, take).ToList();
-            var stream = new EventStream();
-
-            foreach (var tapeRecord in records)
-            {
-                stream.Events.AddRange(DeserializeEvent(tapeRecord.Data));
-                stream.Version = tapeRecord.Version;
-            }
-            return stream;
+            _jsonMapper = jsonMapper;
         }
 
         string IdentityToGuid(IEntityId id) => id.Id;
 
-        public EventStream LoadEventStream(IEntityId id)
+        public EventStream LoadEventStream(IEntityId id) => LoadEventStream(id, 0, int.MaxValue);
+
+        public EventStream LoadEventStream(IEntityId id, long skipEvents) => LoadEventStream(id, skipEvents, int.MaxValue);
+
+        public EventStream LoadEventStream(IEntityId id, long skip, int take)
         {
-            return LoadEventStream(id, 0, int.MaxValue);
+            var name = IdentityToGuid(id);
+            var records = _appendOnlyStore.ReadRecords(name, skip, take);
+            List<IEvent> events = new();
+            long version = default;
+            foreach (var record in records)
+            {
+                events.Add(_jsonMapper.Deserialize<IEvent>(record.EventType, record.EventBody));
+                version = record.Sequence;
+            }
+            var stream = new EventStream(version, events);
+            return stream;
         }
+
+        public T NextIdentity<T>(Func<string, T> generator) => generator(_appendOnlyStore.NextIdentity());
 
         public void AppendToStream(IEntityId id, long originalVersion, IEnumerable<IEvent> events)
         {
-            if (!events.Any())
-                return;
+            if (!events.Any()) return;
             var name = IdentityToGuid(id);
-            var data = SerializeEvent(events.ToArray());
+            var data = events.Select(@event => new StoredEvent(id.Id, @event.Sequence, @event.GetType(), _jsonMapper.Serialize(@event), @event.OccuredOn));
             try
             {
                 _appendOnlyStore.Append(name, data, originalVersion);
@@ -81,24 +59,6 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
                 // throw a real problem
                 throw OptimisticConcurrencyException.Create(server.Version, e.ExpectedStreamVersion, id, server.Events);
             }
-
-            // technically there should be parallel process that queries new changes from 
-            // event store and sends them via messages. 
-            // however, for demo purposes, we'll just send them to console from here
-
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            foreach (var @event in events)
-            {
-                Console.WriteLine("  {0} r{1} Event: {2}", id, originalVersion, @event);
-            }
-            Console.ForegroundColor = ConsoleColor.DarkGray;
         }
-
-        public EventStream LoadEventStream(IEntityId id, long skipEvents)
-        {
-            return LoadEventStream(id, skipEvents, int.MaxValue);
-        }
-
-        public T NextIdentity<T>(Func<string, T> generator) => generator(_appendOnlyStore.NextIdentity());
     }
 }

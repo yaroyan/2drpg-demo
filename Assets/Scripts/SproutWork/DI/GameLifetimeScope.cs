@@ -4,11 +4,9 @@ using UnityEngine;
 using MessagePipe;
 using Yaroyan.SproutWork.Application.CQRS.Command;
 using Yaroyan.SproutWork.Application.CQRS.Event;
-using Yaroyan.SproutWork.Application.CQRS.Query;
 using Yaroyan.SeedWork.DDD4U.Application.CQRS.Command;
 using Yaroyan.SeedWork.DDD4U.Application.CQRS.Event;
 using Yaroyan.SeedWork.DDD4U.Application.CQRS.Query;
-using Yaroyan.SproutWork.Domain.Event.Other;
 using System;
 
 namespace Yaroyan.SproutWork.DI
@@ -28,7 +26,6 @@ namespace Yaroyan.SproutWork.DI
             // ================
             // CQRS - Command
             // ================
-            builder.Register<ICommandHandler<DeleteItemCommand>, DeleteItemCommandHandler>(Lifetime.Singleton);
             builder.Register<ICommandBus, CommandsBus>(Lifetime.Singleton);
 
             // ================
@@ -38,7 +35,6 @@ namespace Yaroyan.SproutWork.DI
             // ================
             // CQRS - Event
             // ================
-            builder.Register<IEventHandler<ItemDeletedEvent>, ItemDeletedHandler>(Lifetime.Singleton);
             builder.Register<IEventBus, EventBus>(Lifetime.Singleton);
 
             // ================

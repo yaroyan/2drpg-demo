@@ -17,10 +17,10 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
         public long ActualVersion { get; private set; }
         public long ExpectedVersion { get; private set; }
         public IEntityId Id { get; private set; }
-        public IList<IEvent> ActualEvents { get; private set; }
+        public IEnumerable<IEvent> ActualEvents { get; private set; }
 
         OptimisticConcurrencyException(string message, long actualVersion, long expectedVersion, IEntityId id,
-            IList<IEvent> serverEvents)
+            IEnumerable<IEvent> serverEvents)
             : base(message)
         {
             ActualVersion = actualVersion;
@@ -30,7 +30,7 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
         }
 
         public static OptimisticConcurrencyException Create(long actual, long expected, IEntityId id,
-            IList<IEvent> serverEvents)
+            IEnumerable<IEvent> serverEvents)
         {
             var message = string.Format("Expected v{0} but found v{1} in stream '{2}'", expected, actual, id);
             return new OptimisticConcurrencyException(message, actual, expected, id, serverEvents);

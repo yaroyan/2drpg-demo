@@ -9,48 +9,39 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
 {
     public class InMemoryEventStore : IAppendOnlyStore
     {
-        readonly ConcurrentDictionary<string, DataWithVersion[]> _eventStore = new();
-        DataWithName[] _all = new DataWithName[0];
+        readonly ConcurrentDictionary<string, List<StoredEvent>> _eventStore = new();
+        List<StoredEvent> _all = new();
 
-        public void Append(string Id, byte[] data, long expectedStreamVersion = -1)
+        public void Append(string Id, IEnumerable<StoredEvent> data, long expectedStreamVersion = -1)
         {
 
-            var list = _eventStore.GetOrAdd(Id, s => new DataWithVersion[0]);
+            var list = _eventStore.GetOrAdd(Id, s => new());
             if (expectedStreamVersion >= 0)
             {
-                if (list.Length != expectedStreamVersion)
-                    throw new AppendOnlyStoreConcurrencyException(expectedStreamVersion, list.Length, Id);
+                if (list.Count != expectedStreamVersion)
+                    throw new AppendOnlyStoreConcurrencyException(expectedStreamVersion, list.Count, Id);
             }
-            long commit = list.Length + 1;
+            long commit = list.Count + 1;
             AddToCaches(Id, data, commit);
         }
 
-        void AddToCaches(string key, byte[] buffer, long commit)
+        void AddToCaches(string key, IEnumerable<StoredEvent> buffer, long commit)
         {
-            var record = new DataWithVersion(commit, buffer);
-            _all = ImmutableAdd(_all, new DataWithName(key, buffer));
-            _eventStore.AddOrUpdate(key, s => new[] { record }, (s, records) => ImmutableAdd(records, record));
-        }
-
-        static T[] ImmutableAdd<T>(T[] source, T item)
-        {
-            var copy = new T[source.Length + 1];
-            Array.Copy(source, copy, source.Length);
-            copy[source.Length] = item;
-            return copy;
+            _all.AddRange(buffer);
+            _eventStore.AddOrUpdate(key, s => new(buffer), (s, records) => { records.AddRange(buffer); return records; });
         }
 
         public void Close() { }
 
         public void Dispose() { }
 
-        public IEnumerable<DataWithVersion> ReadRecords(string Id, long afterVersion, int maxCount)
+        public IEnumerable<StoredEvent> ReadRecords(string Id, long afterVersion, int maxCount)
         {
-            DataWithVersion[] list;
-            return _eventStore.TryGetValue(Id, out list) ? list : Enumerable.Empty<DataWithVersion>();
+            List<StoredEvent> list;
+            return _eventStore.TryGetValue(Id, out list) ? list : Enumerable.Empty<StoredEvent>();
         }
 
-        public IEnumerable<DataWithName> ReadRecords(long afterVersion, int maxCount) => _all.Skip((int)afterVersion).Take(maxCount);
+        public IEnumerable<StoredEvent> ReadRecords(long afterVersion, int maxCount) => _all.Skip((int)afterVersion).Take(maxCount);
 
         public string NextIdentity() => Guid.NewGuid().ToString();
     }

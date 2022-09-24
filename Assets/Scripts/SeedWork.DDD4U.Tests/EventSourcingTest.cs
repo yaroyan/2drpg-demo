@@ -9,6 +9,9 @@ using UnityEngine;
 using Yaroyan.SeedWork.DDD4U.Application;
 using Yaroyan.SeedWork.DDD4U.Domain.Event;
 using Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSourcing;
+using Yaroyan.SeedWork.Common.JSON;
+using Yaroyan.SeedWork.DDD4U.Common;
+using System.Linq.Expressions;
 
 namespace Yaroyan.SeedWork.DDD4U.Test
 {
@@ -31,6 +34,9 @@ namespace Yaroyan.SeedWork.DDD4U.Test
         {
             var builder = new ContainerBuilder();
             var options = builder.RegisterMessagePipe();
+            builder.Register<IJsonSerializer, JsonSerializer>(Lifetime.Singleton);
+            builder.Register<IJsonDeserializer, JsonDeserializer>(Lifetime.Singleton);
+            builder.Register<IJsonMapper, JsonMapper>(Lifetime.Singleton);
             builder.RegisterMessageBroker<ITestEvent>(options);
             builder.Register<ISnapshotRepository, InMemorySnapshotRepository>(Lifetime.Singleton);
             builder.Register<IAppendOnlyStore, InMemoryEventStore>(Lifetime.Singleton);
@@ -57,10 +63,19 @@ namespace Yaroyan.SeedWork.DDD4U.Test
         {
             _applicationService.Execute(new TestRegisteredCommand("test"));
             var data = _appendOnlyStore.ReadRecords(0, int.MaxValue).First();
-            var stream = _eventStore.LoadEventStream(new TestEntityId(data.Id));
+            var stream = _eventStore.LoadEventStream(new TestEntityId(data.AggregateRootId));
             var ar = new TestAggregateRoot(stream.Events);
             Debug.Log(stream.Events.First().ToString());
             Assert.That(ar is not null);
+        }
+
+        [Test]
+        public void BsonDeserialize()
+        {
+            var @event = new TestRegisteredEvent(Guid.NewGuid().ToString(), 0, DateTime.Now, "test");
+            var document = LiteDB.JsonSerializer.Deserialize(_resolver.Resolve<IJsonMapper>().Serialize(@event));
+            Assert.That(document is not null);
+            Debug.Log(document.ToString());
         }
     }
 }
