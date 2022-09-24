@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Yaroyan.SeedWork.DDD4U.Domain.Event;
 using Yaroyan.SeedWork.DDD4U.Application.CQRS.Command;
-using Yaroyan.SeedWork.Common.VContainer;
+using Yaroyan.SeedWork.DDD4U.Common.VContainer;
 
 namespace Yaroyan.SproutWork.Application.CQRS.Command
 {

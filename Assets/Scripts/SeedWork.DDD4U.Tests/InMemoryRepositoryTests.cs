@@ -10,12 +10,12 @@ namespace Yaroyan.SeedWork.DDD4U.Test
 {
     public class InMemoryRepositoryTests
     {
-        TestInMemoryRepository _repository;
+        InMemoryRepository<TestEntityId, TestAggregateRoot> _repository;
 
         [SetUp]
         public void SetUp()
         {
-            _repository = new TestInMemoryRepository();
+            _repository = new InMemoryRepository<TestEntityId, TestAggregateRoot>();
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Yaroyan.SeedWork.DDD4U.Test
         public void FindAllAggregateInTheRepository()
         {
             int iteration = 2;
-            for(int i = 0; i < iteration; i++)
+            for (int i = 0; i < iteration; i++)
             {
                 _repository.Save(new TestAggregateRoot(_repository.NextIdentity(), ""));
             }

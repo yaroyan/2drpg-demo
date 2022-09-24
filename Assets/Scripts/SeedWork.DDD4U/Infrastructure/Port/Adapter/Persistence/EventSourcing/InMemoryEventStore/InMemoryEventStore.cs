@@ -9,10 +9,10 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
 {
     public class InMemoryEventStore : IAppendOnlyStore
     {
-        readonly ConcurrentDictionary<Guid, DataWithVersion[]> _eventStore = new();
+        readonly ConcurrentDictionary<string, DataWithVersion[]> _eventStore = new();
         DataWithName[] _all = new DataWithName[0];
 
-        public void Append(Guid Id, byte[] data, long expectedStreamVersion = -1)
+        public void Append(string Id, byte[] data, long expectedStreamVersion = -1)
         {
 
             var list = _eventStore.GetOrAdd(Id, s => new DataWithVersion[0]);
@@ -25,7 +25,7 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
             AddToCaches(Id, data, commit);
         }
 
-        void AddToCaches(Guid key, byte[] buffer, long commit)
+        void AddToCaches(string key, byte[] buffer, long commit)
         {
             var record = new DataWithVersion(commit, buffer);
             _all = ImmutableAdd(_all, new DataWithName(key, buffer));
@@ -44,12 +44,14 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
 
         public void Dispose() { }
 
-        public IEnumerable<DataWithVersion> ReadRecords(Guid Id, long afterVersion, int maxCount)
+        public IEnumerable<DataWithVersion> ReadRecords(string Id, long afterVersion, int maxCount)
         {
             DataWithVersion[] list;
             return _eventStore.TryGetValue(Id, out list) ? list : Enumerable.Empty<DataWithVersion>();
         }
 
         public IEnumerable<DataWithName> ReadRecords(long afterVersion, int maxCount) => _all.Skip((int)afterVersion).Take(maxCount);
+
+        public string NextIdentity() => Guid.NewGuid().ToString();
     }
 }

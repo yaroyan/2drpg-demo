@@ -5,5 +5,5 @@ using System;
 
 namespace Yaroyan.SproutWork.Domain.Model.User
 {
-    public record UserId(Guid Id) : EntityId(Id) { }
+    public record UserId(string Id) : EntityId(Id) { }
 }

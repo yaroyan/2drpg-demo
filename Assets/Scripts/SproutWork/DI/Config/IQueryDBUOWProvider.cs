@@ -4,6 +4,7 @@ using System;
 using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.InMemoryRepository;
 using Yaroyan.SproutWork.Infrastructure.DataSource;
 using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository;
+using Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Repository;
 
 public interface IQueryDBUOWProvider : IDisposable
 {

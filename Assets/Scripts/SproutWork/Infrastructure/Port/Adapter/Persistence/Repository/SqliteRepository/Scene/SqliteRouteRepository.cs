@@ -10,7 +10,6 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteReposito
     public class SqliteRouteRepository : Repository<RouteId, Route>, IRouteRepository
     {
         public SqliteRouteRepository(IDbTransaction transaction) : base(transaction) { }
-        public override RouteId NextIdentity() => new RouteId(Guid.NewGuid());
 
         public override void Save(Route aggregateRoot)
         {

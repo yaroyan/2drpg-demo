@@ -2,7 +2,7 @@
     "name": "DBIXporter",
     "rootNamespace": "",
     "references": [
-        "GUID:5e27e40a815b7dc48bcec01157dacc4f",
+        "GUID:254325b3449b29b40b823bd92a3cfb96",
         "GUID:09a81fc2beed7084fb4d831697caee94",
         "GUID:fb1ef516152e05943807da020cf3c0ae"
     ],

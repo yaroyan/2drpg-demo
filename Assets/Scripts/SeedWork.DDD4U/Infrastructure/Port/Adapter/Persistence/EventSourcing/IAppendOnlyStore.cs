@@ -17,7 +17,7 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
         /// <param name="expectedStreamVersion">The server version (supply -1 to append without check).</param>
         /// <exception cref="AppendOnlyStoreConcurrencyException">thrown when expected server version is
         /// supplied and does not match to server version</exception>
-        void Append(Guid Id, byte[] data, long expectedStreamVersion = -1);
+        void Append(string Id, byte[] data, long expectedStreamVersion = -1);
         /// <summary>
         /// Reads the records by stream name.
         /// </summary>
@@ -25,7 +25,7 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
         /// <param name="afterVersion">The after version.</param>
         /// <param name="maxCount">The max count.</param>
         /// <returns></returns>
-        IEnumerable<DataWithVersion> ReadRecords(Guid Id, long afterVersion, int maxCount);
+        IEnumerable<DataWithVersion> ReadRecords(string Id, long afterVersion, int maxCount);
         /// <summary>
         /// Reads the records across all streams.
         /// </summary>
@@ -35,10 +35,11 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
         IEnumerable<DataWithName> ReadRecords(long afterVersion, int maxCount);
 
         void Close();
+        string NextIdentity();
     }
 
     public sealed record DataWithVersion(long Version, byte[] Data) { }
-    public sealed record DataWithName(Guid Id, byte[] Data) { }
+    public sealed record DataWithName(string Id, byte[] Data) { }
 
     /// <summary>
     /// Is thrown internally, when storage version does not match the condition 
@@ -49,14 +50,14 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
     {
         public long ExpectedStreamVersion { get; private set; }
         public long ActualStreamVersion { get; private set; }
-        public Guid StreamName { get; private set; }
+        public string StreamName { get; private set; }
 
         protected AppendOnlyStoreConcurrencyException(
             SerializationInfo info,
             StreamingContext context)
             : base(info, context) { }
 
-        public AppendOnlyStoreConcurrencyException(long expectedVersion, long actualVersion, Guid name)
+        public AppendOnlyStoreConcurrencyException(long expectedVersion, long actualVersion, string name)
             : base(
                 string.Format("Expected version {0} in stream '{1}' but got {2}", expectedVersion, name, actualVersion))
         {

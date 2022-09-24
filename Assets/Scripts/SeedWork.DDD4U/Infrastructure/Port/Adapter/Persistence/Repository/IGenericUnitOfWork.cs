@@ -6,6 +6,6 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Reposit
 {
     public interface IGenericUnitOfWork : IUnitOfWork
     {
-        IRepository<T, IAggregateRoot<T>> GetRepository<T>() where T : IEntityId;
+        IRepository<T, U> GetRepository<T, U>() where T : IEntityId where U : IAggregateRoot<T>;
     }
 }

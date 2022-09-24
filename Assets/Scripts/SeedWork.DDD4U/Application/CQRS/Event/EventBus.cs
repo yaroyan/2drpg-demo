@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using VContainer;
 using Yaroyan.SeedWork.DDD4U.Domain.Event;
 using Yaroyan.SeedWork.DDD4U.Application.CQRS.Event;
-using Yaroyan.SeedWork.Common.VContainer;
+using Yaroyan.SeedWork.DDD4U.Common.VContainer;
 
 namespace Yaroyan.SproutWork.Application.CQRS.Event
 {

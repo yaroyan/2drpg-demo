@@ -118,9 +118,8 @@ namespace Yaroyan.SeedWork.DDD4U.Test
             }
         }
     }
-    public class Event : IEvent { }
 
-    public class AgeChangedEvent : Event
+    public record AgeChangedEvent : Event
     {
         public Character Target;
         public int OldValue, NewValue;

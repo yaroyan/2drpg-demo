@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using VContainer;
 
-namespace Yaroyan.SeedWork.Common.VContainer
+namespace Yaroyan.SeedWork.DDD4U.Common.VContainer
 {
     public class ObjectResolverContractor<T> : IObjectResolverContractor<T>
     {

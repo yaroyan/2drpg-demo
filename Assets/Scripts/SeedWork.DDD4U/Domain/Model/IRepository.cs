@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Yaroyan.SeedWork.DDD4U.Domain.Model
 {
-    public interface IRepository<T, U> where T : IEntityId where U : IAggregateRoot<T>
+    public interface IRepository { }
+    public interface IRepository<T, U> : IRepository where T : IEntityId where U : IAggregateRoot<T>
     {
         U Find(T entityId);
         IEnumerable<U> FindAll();

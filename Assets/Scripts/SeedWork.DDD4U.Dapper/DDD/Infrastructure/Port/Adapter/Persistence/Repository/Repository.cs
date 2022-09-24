@@ -1,5 +1,8 @@
 using Dapper;
+using System.Linq.Expressions;
 using System.Collections;
+using System.Collections.Concurrent;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,6 +12,7 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository
 {
     public abstract class Repository<T, U> : IRepository<T, U> where T : IEntityId where U : IAggregateRoot<T>
     {
+        static readonly ConcurrentDictionary<Type, Func<string, T>> s_cachedInstantiationExpression = new();
         protected IDbTransaction Transaction { get; private set; }
         protected IDbConnection Connection => Transaction.Connection;
         protected virtual string TableName => nameof(U);
@@ -25,6 +29,12 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository
         public virtual void Delete(U aggregateRoot) => Connection.Query<U>($"delete from {TableName} where id = @id", param: new { id = aggregateRoot.Id }, Transaction);
         public abstract void Save(U aggregateRoot);
         public abstract void Update(U aggregateRoot);
-        public abstract T NextIdentity();
+        public T NextIdentity()
+        {
+            var expression = s_cachedInstantiationExpression.GetOrAdd(
+                            typeof(T),
+                            Expression.Lambda<Func<string, T>>(Expression.New(typeof(T).GetConstructor(new[] { typeof(string) }), Expression.Parameter(typeof(string), "Id"))).Compile());
+            return expression(Guid.NewGuid().ToString());
+        }
     }
 }

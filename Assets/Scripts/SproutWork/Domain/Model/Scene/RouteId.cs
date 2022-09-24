@@ -5,5 +5,5 @@ using System;
 
 namespace Yaroyan.SproutWork.Domain.Model.Scene
 {
-    public record RouteId(Guid Id) : EntityId(Id) { }
+    public record RouteId(string Id) : EntityId(Id) { }
 }

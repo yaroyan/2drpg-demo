@@ -6,31 +6,39 @@ using Yaroyan.SproutWork.Domain.Model.User;
 using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository.Scene;
 using Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository.User;
 using Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.Repository;
+using Yaroyan.SeedWork.DDD4U.Domain.Model;
 
 namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteRepository
 {
-    public class SqliteUnitOfWork : UnitOfWork, IUnitOfWork
+    public class SqliteUnitOfWork : GenericUnitOfWork
     {
-        ISceneRepository _sceneRepository;
-        ILocationRepository _locationRepository;
-        IRouteRepository _routeRepository;
-        IUserRepository _userRepository;
-
-        public ISceneRepository SceneRepository => _sceneRepository ??= new SqliteSceneRepository(_transaction);
-        public ILocationRepository LocationRepository => _locationRepository ??= new SqliteLocationRepository(_transaction);
-        public IRouteRepository RouteRepository => _routeRepository ??= new SqliteRouteRepository(_transaction);
-        public IUserRepository UserRepository => _userRepository ??= new SqliteUserRepository(_transaction);
-
         public SqliteUnitOfWork(string connectionString) : base(connectionString) { }
 
         protected override IDbConnection CreateConnection(string connectionString) => new SqliteConnection(connectionString);
 
-        protected override void ResetRepositories()
+        protected override IRepository CreateRepository<T, U>()
         {
-            _sceneRepository = null;
-            _locationRepository = null;
-            _routeRepository = null;
-            _userRepository = null;
+            var generics = (typeof(T), typeof(U));
+            if (generics == (typeof(SceneId), typeof(Domain.Model.Scene.Scene)))
+            {
+                return new SqliteSceneRepository(_transaction);
+            }
+            else if (generics == (typeof(LocationId), typeof(Location)))
+            {
+                return new SqliteLocationRepository(_transaction);
+            }
+            else if (generics == (typeof(RouteId), typeof(Route)))
+            {
+                return new SqliteRouteRepository(_transaction);
+            }
+            else if (generics == (typeof(UserId), typeof(Domain.Model.User.User)))
+            {
+                return new SqliteUserRepository(_transaction);
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid generics repository.");
+            }
         }
     }
 }

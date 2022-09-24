@@ -5,5 +5,5 @@ using System;
 
 namespace Yaroyan.SproutWork.Domain.Model.SaveData
 {
-    public record SessionId(Guid Id) : EntityId(Id) { }
+    public record SessionId(string Id) : EntityId(Id) { }
 }

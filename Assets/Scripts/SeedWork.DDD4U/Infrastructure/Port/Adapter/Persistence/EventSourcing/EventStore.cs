@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Yaroyan.SeedWork.DDD4U.Domain.Event;
 using Yaroyan.SeedWork.DDD4U.Domain.Model;
 using VContainer;
+using LiteDB;
 
 namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSourcing
 {
@@ -56,7 +57,7 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
             return stream;
         }
 
-        Guid IdentityToGuid(IEntityId id) => id.Id;
+        string IdentityToGuid(IEntityId id) => id.Id;
 
         public EventStream LoadEventStream(IEntityId id)
         {
@@ -98,6 +99,6 @@ namespace Yaroyan.SeedWork.DDD4U.Infrastructure.Port.Adapter.Persistence.EventSo
             return LoadEventStream(id, skipEvents, int.MaxValue);
         }
 
-        public T NextIdentity<T>(Func<Guid, T> generator) => generator(Guid.NewGuid());
+        public T NextIdentity<T>(Func<string, T> generator) => generator(_appendOnlyStore.NextIdentity());
     }
 }

@@ -16,17 +16,13 @@ namespace Yaroyan.SeedWork.DDD4U.Test
 {
     public class TestInMemoryUnitOfWork : IUnitOfWork
     {
-        TestInMemoryRepository _testInMemoryRepository;
-        public TestInMemoryRepository TestInMemoryRepository => _testInMemoryRepository ??= new TestInMemoryRepository();
+        InMemoryRepository<TestEntityId, TestAggregateRoot> _testInMemoryRepository;
+        public InMemoryRepository<TestEntityId, TestAggregateRoot> TestInMemoryRepository => _testInMemoryRepository ??= new InMemoryRepository<TestEntityId, TestAggregateRoot>();
         public void Commit() { }
 
         public void Dispose() { }
 
         public void Rollback() { }
-    }
-    public class TestInMemoryRepository : InMemoryRepository<TestEntityId, TestAggregateRoot>
-    {
-        public override TestEntityId NextIdentity() => new TestEntityId(Guid.NewGuid());
     }
 
     public class TestAggregateRoot : AggregateRoot<TestEntityId>
@@ -75,14 +71,14 @@ namespace Yaroyan.SeedWork.DDD4U.Test
     }
 
     [Serializable]
-    public sealed record TestEntityId(Guid Id) : EntityId(Id) { }
+    public sealed record TestEntityId(string Id) : EntityId(Id) { }
     public interface ITestEvent : IEvent { }
     [Serializable]
     public sealed record TestRegisteredCommand(string Name) : ICommand;
     [Serializable]
-    public sealed record TestRegisteredEvent(TestEntityId Id, string Name) : ITestEvent;
+    public sealed record TestRegisteredEvent(TestEntityId Id, string Name) : Event, ITestEvent;
     [Serializable]
-    public sealed record TestChangeNameEvent(TestEntityId Id, string Name) : ITestEvent;
+    public sealed record TestChangeNameEvent(TestEntityId Id, string Name) : Event, ITestEvent;
     [Serializable]
     public sealed record TestChangeNameCommand(TestEntityId Id, string Name) : ICommand;
 }

@@ -8,6 +8,6 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.TypeHandler
 {
     public class SceneIdHandler : EntityIdHandler<SceneId>
     {
-        public override SceneId Parse(object value) => value is System.DBNull ? null : new SceneId(Guid.Parse((string)value));
+        public override SceneId Parse(object value) => value is DBNull ? null : new SceneId((string)value);
     }
 }

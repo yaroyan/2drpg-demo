@@ -2,7 +2,7 @@
     "name": "SeedWork.DDD4U.Tests",
     "rootNamespace": "",
     "references": [
-        "GUID:5e27e40a815b7dc48bcec01157dacc4f",
+        "GUID:254325b3449b29b40b823bd92a3cfb96",
         "GUID:4fe5cda38b60ebc4e86169f021b816aa",
         "GUID:27619889b8ba8c24980f49ee34dbb44a",
         "GUID:0acc523941302664db1f4e527237feb3",
@@ -18,7 +18,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "LiteDB.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

@@ -1,0 +1,16 @@
+{
+    "name": "SeedWork.Newtonsoft",
+    "rootNamespace": "",
+    "references": [
+        "GUID:254325b3449b29b40b823bd92a3cfb96"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

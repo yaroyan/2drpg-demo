@@ -50,11 +50,6 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteReposito
             return hashstring;
         }
 
-        public override UserId NextIdentity()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Save(Domain.Model.User.User aggregateRoot)
         {
             string sql = $"insert into {TableName} (id, password, salt) values (@id, @password, @salt)";
@@ -72,7 +67,7 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteReposito
         {
             string sql = $"select id, password, salt from {TableName} where id = @id";
             object param = new { id = aggregateRoot.Id };
-            var result = Connection.QueryFirstOrDefault<(Guid id, string password, string salt)>(sql, param, Transaction);
+            var result = Connection.QueryFirstOrDefault<(string id, string password, string salt)>(sql, param, Transaction);
             return result.password == Hash(aggregateRoot.Password.Word, result.salt)
                 ? new Domain.Model.User.User(new UserId(result.id), new Password(aggregateRoot.Password.Word))
                 : null;

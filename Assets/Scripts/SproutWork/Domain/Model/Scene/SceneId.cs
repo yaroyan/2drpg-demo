@@ -8,8 +8,5 @@ namespace Yaroyan.SproutWork.Domain.Model.Scene
     /// <summary>
     /// Unique identifier of the Scene entity.
     /// </summary>
-    public record SceneId : EntityId
-    {
-        public SceneId(Guid Id) : base(Id) => base.Id = Id;
-    }
+    public record SceneId(string id) : EntityId(id);
 }

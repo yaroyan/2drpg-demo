@@ -7,8 +7,5 @@ namespace Yaroyan.SeedWork.DDD4U.Domain.Event
     /// Abstract class for domain event.
     /// Implementation by record ensures that it is immutable.
     /// </summary>
-    public record Event : IEvent
-    {
-
-    }
+    public record Event : IEvent { }
 }

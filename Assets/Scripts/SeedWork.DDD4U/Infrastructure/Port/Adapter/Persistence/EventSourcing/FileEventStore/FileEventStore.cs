@@ -18,7 +18,7 @@ namespace Sample.Storage.Files
     /// </summary>
     public class FileAppendOnlyStore : IAppendOnlyStore
     {
-        sealed record Record(byte[] Bytes, Guid Id, long Version) { }
+        sealed record Record(byte[] Bytes, string Id, long Version) { }
 
         readonly DirectoryInfo _info;
 
@@ -30,7 +30,7 @@ namespace Sample.Storage.Files
         FileStream _currentWriter;
 
         // caches
-        readonly ConcurrentDictionary<Guid, DataWithVersion[]> _items = new ();
+        readonly ConcurrentDictionary<string, DataWithVersion[]> _items = new ();
         DataWithName[] _all = new DataWithName[0];
 
         public void Initialize()
@@ -98,7 +98,7 @@ namespace Sample.Storage.Files
             try
             {
                 var version = binary.ReadInt64();
-                var name = Guid.Parse(binary.ReadString());
+                var name = binary.ReadString();
                 var len = binary.ReadInt32();
                 var bytes = binary.ReadBytes(len);
                 var sha = binary.ReadBytes(20); // SHA1. TODO: verify data
@@ -133,7 +133,7 @@ namespace Sample.Storage.Files
             _info = new DirectoryInfo(path);
         }
 
-        public void Append(Guid Id, byte[] data, long expectedStreamVersion = -1)
+        public void Append(string Id, byte[] data, long expectedStreamVersion = -1)
         {
             // should be locked
             try
@@ -163,7 +163,7 @@ namespace Sample.Storage.Files
             }
         }
 
-        void PersistInFile(Guid key, byte[] buffer, long commit)
+        void PersistInFile(string key, byte[] buffer, long commit)
         {
             using (var sha1 = new SHA1Managed())
             {
@@ -197,7 +197,7 @@ namespace Sample.Storage.Files
             _currentWriter = File.OpenWrite(Path.Combine(_info.FullName, fileName));
         }
 
-        void AddToCaches(Guid key, byte[] buffer, long commit)
+        void AddToCaches(string key, byte[] buffer, long commit)
         {
             var record = new DataWithVersion(commit, buffer);
             _all = ImmutableAdd(_all, new DataWithName(key, buffer));
@@ -212,7 +212,7 @@ namespace Sample.Storage.Files
             return copy;
         }
 
-        public IEnumerable<DataWithVersion> ReadRecords(Guid Id, long afterVersion, int maxCount)
+        public IEnumerable<DataWithVersion> ReadRecords(string Id, long afterVersion, int maxCount)
         {
             // no lock is needed.
             DataWithVersion[] list;
@@ -240,5 +240,7 @@ namespace Sample.Storage.Files
         {
             return _all.Length;
         }
+
+        public string NextIdentity() => Guid.NewGuid().ToString();
     }
 }

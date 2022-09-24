@@ -10,7 +10,6 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteReposito
     public class SqliteLocationRepository : Repository<LocationId, Location>, ILocationRepository
     {
         public SqliteLocationRepository(IDbTransaction transaction) : base(transaction) { }
-        public override LocationId NextIdentity() => new LocationId(Guid.NewGuid());
 
         public override void Save(Location aggregateRoot)
         {

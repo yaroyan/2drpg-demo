@@ -12,7 +12,6 @@ namespace Yaroyan.SproutWork.Infrastructure.DataSource.Repository.SqliteReposito
     public class SqliteSceneRepository : Repository<SceneId, Domain.Model.Scene.Scene>, ISceneRepository
     {
         public SqliteSceneRepository(IDbTransaction transaction) : base(transaction) { }
-        public override SceneId NextIdentity() => new SceneId(Guid.NewGuid());
 
         public Domain.Model.Scene.Scene Find(SceneContext context)
         {
