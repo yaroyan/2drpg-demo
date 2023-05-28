@@ -1,0 +1,156 @@
+﻿# A5:ER FORMAT:16
+# A5:ER ENCODING:UTF8
+# A5:ER Mk-1 Copyright © 2007 m.matsubara
+# A5:SQL Mk-2 Version 2.17.4 Copyright © 1997 - 2022 m.matsubara
+#  https://a5m2.mmatsubara.com
+
+[Manager]
+ProjectName=
+Author=
+MaxEntityRowShow=1000
+ReadOnlyRecommend=0
+Page=Main
+PageInfo="Main",7,"A3Landscape",$FFFFFF
+LogicalView=1
+DecodeDomain=0
+ViewModePageIndividually=1
+ViewMode=7
+ViewFormat=0
+UseNondependenceDashLine=0
+FontName=Tahoma
+FontSize=6
+PaperSize=A4Landscape
+HeaderLeft=
+HeaderCenter=
+HeaderRight=
+FooterLeft=
+FooterCenter=
+FooterRight=
+ShowPageoutRelation=1
+RDBMSType=6
+RDBMSTypeName=PostgreSQL
+DefaultPkName=%0:s_PKC
+DefaultPkIndexName=%0:s_PKI
+DefaultIndexName=%0:s_IX%1:d
+DefaultFkName=%0:s_FK%1:d
+SqlSeparator=0
+UpperCaseKeyword=0
+ShowTag=1
+ShowCommonAttributes=0
+BugFixEntityWidth=1
+
+[Entity]
+PName=branch_snapshot
+LName=スナップショット
+Comment=最新のスナップショット（コミット・未コミットを問わず）を格納するテーブル。
+TableOption=
+Page=MAIN
+Left=250
+Top=450
+Field="集約ID","AggregateRootId","bigint","NOT NULL",0,"","",$FFFFFFFF,""
+Field="シーケンス番号","Sequence","bigint","NOT NULL",,"","",$FFFFFFFF,""
+Field="スナップショット型","SnapshotType","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
+Field="スナップショット","Snapshot","json","NOT NULL",,"","",$FFFFFFFF,""
+Field="ブランチID","BranchId","bigint","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221003012416
+Position="MAIN",250,450
+ZOrder=2
+
+[Entity]
+PName=committed_snapshot
+LName=コミット済みスナップショット
+Comment=コミット直後の集約のスナップショットを格納するテーブル。\n主に、過去のセーブデータロードおよび未コミットのセッション終了時のロールバック（補償イベント生成）処理に利用する。
+TableOption=
+Page=MAIN
+Left=250
+Top=650
+Field="集約ID","AggregateRootId","bigint","NOT NULL",0,"","",$FFFFFFFF,""
+Field="シーケンス番号","Sequence","bigint","NOT NULL",,"","",$FFFFFFFF,""
+Field="スナップショット型","SnapshotType","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
+Field="スナップショット","Snapshot","json","NOT NULL",,"","",$FFFFFFFF,""
+Field="コミットID","CommitId","bigint","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221001182033
+Position="MAIN",250,650
+ZOrder=3
+
+[Comment]
+Comment=検討中。\nゲームプレイ中専用のスナップショットテーブル。\nパフォーマンスの問題が懸念される場合に適用する。
+FontName=Tahoma
+FontBold=0
+FontItalic=0
+FontUnderline=0
+FontSize=7
+FontColor=$000000
+LineColor=$000000
+BkColor=$FFFFFF
+Page=Main
+Left=185
+Top=472
+ZOrder=5
+Width=627
+Height=115
+
+[Entity]
+PName=domain_event
+LName=イベント
+Comment=ドメインイベントを格納するテーブル。
+TableOption=
+Page=MAIN
+Left=200
+Top=50
+Field="イベントID","_id","varchar(100)","NOT NULL",0,"","",$FFFFFFFF,""
+Field="集約ID","AggregateRootId","bigint","NOT NULL",,"","",$FFFFFFFF,""
+Field="シーケンス番号","Sequence","bigint","NOT NULL",,"","",$FFFFFFFF,""
+Field="イベント型","EventType","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
+Field="イベント","EventBody","json","NOT NULL",,"","",$FFFFFFFF,""
+Field="発生日時","OccurredOn","timestamp with time zone","NOT NULL",,"","",$FFFFFFFF,""
+Index=ui_event_01=1,AggregateRootId 
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221003012557
+Position="MAIN",200,50
+ZOrder=6
+
+[Comment]
+Comment=検討中。\nコミット時ののスナップショットテーブル。\nパフォーマンスの問題が懸念される場合に適用する。
+FontName=Tahoma
+FontBold=0
+FontItalic=0
+FontUnderline=0
+FontSize=7
+FontColor=$000000
+LineColor=$000000
+BkColor=$FFFFFF
+Page=Main
+Left=189
+Top=673
+ZOrder=7
+Width=627
+Height=115
+
+[Entity]
+PName=aggregate_root_snapshot
+LName=スナップショット
+Comment=最新のスナップショット（コミット・未コミットを問わず）を格納するテーブル。
+TableOption=
+Page=Main
+Left=200
+Top=250
+Field="スナップショットID","_id","varchar(100)","NOT NULL",0,"","",$FFFFFFFF,""
+Field="集約ID","AggregateRootId","bigint","NOT NULL",,"","",$FFFFFFFF,""
+Field="シーケンス番号","Sequence","bigint","NOT NULL",,"","",$FFFFFFFF,""
+Field="スナップショット型","SnapshotType","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
+Field="スナップショット","Snapshot","json","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221003012540
+Position="Main",200,250
+ZOrder=9
